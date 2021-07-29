@@ -1,12 +1,12 @@
 <template>
-<div class="position">
-    <span class="iconfont position__icon">&#xe6b4;</span>
-    北京理工大学国防科技园2号楼10层北京理工大学国防科技园2号楼10层
-    <span class="iconfont position__notice">&#xe60a;</span>
-  </div>
   <div class="search">
-    <span class="iconfont">&#xe644;</span>
-    <span class="search__input"><input type="text" name="search" placeholder="山姆会员商店优惠商品限时抢购速来,过期不候"></span>
+    <span class="search__title">云逸商城 ｜</span>
+    <span class="search__input">
+      <router-link to="/product-list?from=home"><span>云蒸霞蔚，逸群绝伦</span></router-link>
+    </span>
+    <span class="loginInfo">
+      <span>登录</span>
+    </span>
   </div>
   <div class="banner">
     <img class="banner__img" src="http://www.dell-lee.com/imgs/vue3/banner.jpg">
@@ -21,7 +21,6 @@
       <p class="icons__item__desc">{{item.desc}}</p>
     </div>
   </div>
-  <div class="gap"></div>
 </template>
 
 <script>
@@ -30,45 +29,45 @@ export default {
   setup () {
     const iconsInfo = [
       {
-        id: 1,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/超市.png',
-        desc: '超市便利'
+        desc: '新蜂超市',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E8%B6%85%E5%B8%82%402x.png',
+        id: 1
       }, {
-        id: 2,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/菜市场.png',
-        desc: '菜市场'
+        desc: '新蜂服饰',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E6%9C%8D%E9%A5%B0%402x.png',
+        id: 2
       }, {
-        id: 3,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/水果店.png',
-        desc: '水果店'
+        desc: '全球购',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%85%A8%E7%90%83%E8%B4%AD%402x.png',
+        id: 3
       }, {
-        id: 4,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/鲜花.png',
-        desc: '鲜花绿植'
+        desc: '新蜂生鲜',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E7%94%9F%E9%B2%9C%402x.png',
+        id: 4
       }, {
-        id: 5,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/医药健康.png',
-        desc: '医药健康'
+        desc: '新蜂到家',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%88%B0%E5%AE%B6%402x.png',
+        id: 5
       }, {
-        id: 6,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/家居.png',
-        desc: '家居时尚'
+        desc: '充值缴费',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%85%85%E5%80%BC%402x.png',
+        id: 6
       }, {
-        id: 7,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/蛋糕.png',
-        desc: '烘焙蛋糕'
+        desc: '9.9元拼',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/9.9%402x.png',
+        id: 7
       }, {
-        id: 8,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/签到.png',
-        desc: '签到'
+        desc: '领劵',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E9%A2%86%E5%88%B8%402x.png',
+        id: 8
       }, {
-        id: 9,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/大牌免运.png',
-        desc: '大牌免运'
+        desc: '省钱',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E7%9C%81%E9%92%B1%402x.png',
+        id: 9
       }, {
-        id: 10,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/红包.png',
-        desc: '红包套餐'
+        desc: '全部',
+        imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%85%A8%E9%83%A8%402x.png',
+        id: 10
       }
     ]
     return {
@@ -81,58 +80,45 @@ export default {
 <style lang="scss" scoped>
   @import '../../style/viriables.scss';
   @import '../../style/mixins.scss';
-  .position {
-    color: $content-fontcolor;
-    position: relative;
-    padding: .16rem .24rem .16rem 0;
-    line-height: .22rem;
-    font-size: .16rem;
-    @include ellipsis;
-    .position__icon {
-      position: relative;
-      top: .01rem;
-      font-size: .2rem;
-    }
-    .position__notice {
-      position: absolute;
-      right: 0;
-      top: .17rem;
-      font-size: .2rem;
-    }
-  }
   .search {
     line-height: .32rem;
     background-color: #f5f5f5;
     color: #b7b7b7;
     border-radius: .16rem;
     font-size: .14rem;
-    margin-bottom: .12rem;
+    margin: .12rem .5rem .12rem 0;
+    position: relative;
+    &__title {
+      color: $primary-color;
+      font-weight: bold;
+      font-size: .2rem;
+      padding-left: .15rem;
+    }
     &__input {
-      padding: 0 .44rem 0 .62rem;
+      margin: 0 .14rem 0 1.26rem;
       height: .32rem;
       position: absolute;
       left: 0;
       right: 0;
-      top: .57rem;
+      top: 0;
     }
-    input {
-      color: #090909;
+    a span {
+      display: block;
       box-sizing: border-box;
       background-color: #f5f5f5;
       height: .32rem;
-      border: solid 0px;
       width: 100%;
+      border: 0;
       font-size: .14rem;
+      color: #b7b7b7;
+      @include ellipsis;
     }
-    input:focus-visible {
-      outline: 0;
-    }
-    .iconfont {
-      position: relative;
-      top: .01rem;
-      font-size: .2rem;
-      display: inline-block;
-      padding: 0 .08rem 0 .16rem ;
+    .loginInfo {
+      position: absolute;
+      top: .02rem;
+      right: -0.44rem;
+      color: $primary-color;
+      font-weight: bold;
     }
   }
   .banner {
@@ -161,10 +147,5 @@ export default {
         color: $content-fontcolor;
       }
     }
-  }
-  .gap {
-    height: 10px;
-    background-color: #f1f1f1;
-    margin: 0 -.18rem;
   }
 </style>

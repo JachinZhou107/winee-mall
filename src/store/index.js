@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-07-28 13:53:07
+ * @LastEditTime: 2021-07-28 18:33:38
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \my-mall\src\store\index.js
+ */
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -18,20 +26,15 @@ export default createStore({
   },
   mutations: {
     changeItemInCart (state, payload) {
-      const { shopId, productInfo, num } = payload
+      const { productInfo, num } = payload
       // console.log(shopId, productInfo._id)
-      let cartShopInfo = state.cartList[shopId]
-      if (!cartShopInfo) {
-        cartShopInfo = {}
-      }
-      let cartProductInfo = cartShopInfo[productInfo._id]
+      let cartProductInfo = state.cartList[productInfo._id]
       if (!cartProductInfo) {
         cartProductInfo = productInfo
         cartProductInfo.count = 0
       }
       if (cartProductInfo.count + num >= 0) { cartProductInfo.count += num }
-      cartShopInfo[productInfo._id] = cartProductInfo
-      state.cartList[shopId] = cartShopInfo
+      state.cartList[productInfo._id] = cartProductInfo
     }
   },
   actions: {

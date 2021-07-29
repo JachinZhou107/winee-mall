@@ -7,59 +7,39 @@
     ><b></b><i></i></div>
     <div class="search__content">
       <span class="iconfont">&#xe644;</span>
-      <span class="search__content__input">
-        <input type="text" name="search" value="请输入商品名称">
+      <span class="search__content__input" >
+        <router-link to="/product-list?from=home"><span>鸿星尔克促销！全场五十元起步</span></router-link>
       </span>
     </div>
   </div>
-  <ShopInfo :item='item' :haveBorder='false' v-if="item.imgUrl"/>
   <Content />
-  <Cart />
 </div>
+<Docker currentPage="category"/>
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { get } from '../../utils/request'
-import ShopInfo from '../../components/ShopInfo'
+import { useRouter } from 'vue-router'
 import Content from './Content'
-import Cart from './Cart'
-
-// 获取商铺信息
-const useShopInfo = () => {
-  const data = reactive({ item: {} })
-  const route = useRoute()
-  const getItemData = async () => {
-    const result = await get(`/api/shop/${route.params.id}`)
-    if (result?.errno === 0 && result?.data) {
-      data.item = result.data
-    }
-  }
-  const { item } = toRefs(data)
-  return { getItemData, item }
-}
+import Docker from '../../components/Docker'
 
 export default {
   name: 'Shop',
   components: {
-    ShopInfo,
     Content,
-    Cart
+    Docker
   },
   setup () {
     const router = useRouter()
-    const { item, getItemData } = useShopInfo()
     const handleGoBack = () => {
       router.back()
     }
-    getItemData()
-    return { item, handleGoBack }
+    return { handleGoBack }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../style/mixins.scss';
 .wrapper {
   padding: 0 .18rem;
   .search {
@@ -101,19 +81,17 @@ export default {
         left: 0;
         right: 0;
         top: .17rem;
-      }
-      input {
-        color: #333333;
-        box-sizing: border-box;
-        background-color: #f5f5f5;
-        height: .32rem;
-        border: solid 0px;
-        width: 100%;
-        font-size: .14rem;
-        line-height: .16rem;
-      }
-      input:focus-visible {
-        outline: 0;
+        a span {
+          display: block;
+          box-sizing: border-box;
+          background-color: #f5f5f5;
+          height: .32rem;
+          width: 100%;
+          border: 0;
+          font-size: .14rem;
+          color: #b7b7b7;
+          @include ellipsis;
+        }
       }
       .iconfont {
         position: relative;

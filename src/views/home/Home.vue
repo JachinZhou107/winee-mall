@@ -1,22 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-28 14:00:28
- * @LastEditors: your name
+ * @LastEditTime: 2021-07-29 09:21:59
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\Home.vue
 -->
 <template>
   <div class="wrapper">
     <StaticPart />
-    <NearBy />
+    <NearBy name="新品上线" />
+    <NearBy name="热销商品" />
+    <NearBy name="最新推荐" />
   </div>
-  <Docker />
+  <Docker current-page="home"/>
 </template>
 <script>
 import StaticPart from './StaticPart'
 import NearBy from './NearBy'
-import Docker from './Docker'
+import Docker from '../../components/Docker'
 export default {
   name: 'Home',
   components: {

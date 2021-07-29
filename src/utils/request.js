@@ -1,7 +1,16 @@
+/*
+ * @Author: your name
+ * @Date: 2021-07-28 13:53:07
+ * @LastEditTime: 2021-07-28 19:49:09
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \my-mall\src\utils\request.js
+ */
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'https://www.fastmock.site/mock/ae8e9031947a302fed5f92425995aa19/jd',
+  // baseURL: 'https://www.fastmock.site/mock/ae8e9031947a302fed5f92425995aa19/jd',
+  baseURL: 'https://www.fastmock.site/mock/a57e273033cfba677dffd0668818a17d/jd',
   timeout: 10000
 })
 

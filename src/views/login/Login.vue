@@ -44,11 +44,10 @@ const useLogin = (showToast) => {
         username: data.username,
         password: data.password
       })
-      if (result?.errno === 0) {
-        localStorage.isLogin = true
+      if (result?.status === 10000) {
         router.push({ name: 'Home' })
       } else {
-        showToast('登陆失败')
+        showToast(result?.msg)
       }
     } catch (e) {
       showToast('请求失败')
