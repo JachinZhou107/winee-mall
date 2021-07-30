@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-29 20:09:49
+ * @LastEditTime: 2021-07-30 10:09:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\router\index.js
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { Toast } from 'vant'
 import { post } from '../utils/request'
 
 const getLoginStatus = async () => {
@@ -71,8 +72,11 @@ router.beforeEach((to, from, next) => {
   console.log(to, from)
   getLoginStatus()
     .then((res) => {
-      const isLogin = res;
-      (isLogin || to.name === 'Login' || to.name === 'Register' || to.name === 'Home') ? next() : next({ name: 'Login' })
+      const isLogin = res
+      if (isLogin || to.name === 'Login' || to.name === 'Register' || to.name === 'Home') { next() } else {
+        Toast.fail('请先登录')
+        next({ name: 'Login' })
+      }
     })
 })
 

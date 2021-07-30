@@ -22,17 +22,16 @@
       <span class="wrapper__tools__register" @click="handleGoRegister">立即注册</span> |
       <span class="wrapper__tools__password">忘记密码</span>
     </div>
-    <Toast v-if="show" :message="toastMessage"/>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 import { post } from '../../utils/request'
-import Toast, { useToast } from '../../components/Toast'
 
-const useLogin = (showToast) => {
+const useLogin = () => {
   const router = useRouter()
   const data = reactive({
     username: '',
@@ -47,10 +46,10 @@ const useLogin = (showToast) => {
       if (result?.status === 10000) {
         router.push({ name: 'Home' })
       } else {
-        showToast(result?.msg)
+        Toast.fail(result?.msg)
       }
     } catch (e) {
-      showToast('请求失败')
+      Toast.fail('请求失败')
     }
 
     // .then(() => {
@@ -72,11 +71,9 @@ const useLogin = (showToast) => {
 
 export default {
   name: 'Login',
-  components: { Toast },
   setup () {
     const router = useRouter()
-    const { showToast, show, toastMessage } = useToast()
-    const { handleLogin, username, password } = useLogin(showToast)
+    const { handleLogin, username, password } = useLogin()
     const handleGoRegister = () => {
       router.push({ name: 'Register' })
     }
@@ -84,9 +81,7 @@ export default {
       handleLogin,
       handleGoRegister,
       username,
-      password,
-      toastMessage,
-      show
+      password
     }
   }
 }
@@ -107,7 +102,7 @@ export default {
   }
   &__input {
     background: #F9F9F9;
-    border: 1px solid rgba(0,0,0,0.10);
+    border: 1PX solid rgba(0,0,0,0.10);
     border-radius: 6px;
     border-radius: 6px;
     height: .48rem;
