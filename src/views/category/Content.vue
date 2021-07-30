@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-29 10:02:22
+ * @LastEditTime: 2021-07-30 10:16:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\category\Content.vue
@@ -30,6 +30,8 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
+import { Toast } from 'vant'
+
 import { get } from '../../utils/request'
 import CategoriesInfo from '../../components/CategoriesInfo'
 
@@ -39,9 +41,14 @@ const useCategories = () => {
     curTab: 0
   })
   const getContentData = async () => {
+    Toast.loading({
+      message: '加载中',
+      forbidClick: true
+    })
     const result = await get('/api/categories')
     data.contentList = result.data
     data.curTab = 0
+    Toast.clear()
   }
   const handleCategoryClick = (tab) => {
     data.curTab = tab

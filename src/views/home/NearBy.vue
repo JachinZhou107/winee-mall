@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-28 18:37:06
+ * @LastEditTime: 2021-07-30 10:15:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -27,15 +27,21 @@
 import { ref } from 'vue'
 import { get } from '../../utils/request'
 import ProductInfo from '../../components/ProductInfo'
+import { Toast } from 'vant'
 
 const useNearbyList = () => {
   const nearbyList = ref([])
   const getNearbyList = async () => {
+    Toast.loading({
+      message: '加载中',
+      forbidClick: true
+    })
     const result = await get('/api/shop/hot-list')
     // console.log(result)
     if (result?.errno === 0 && result?.data?.length) {
       nearbyList.value = result.data
     }
+    Toast.clear()
   }
   // console.log(nearbyList)
   return { nearbyList, getNearbyList }
