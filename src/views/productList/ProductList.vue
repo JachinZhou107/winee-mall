@@ -279,7 +279,7 @@ export default {
       justify-content: space-between;
       padding: .12rem;
       box-sizing: border-box;
-      border-bottom: solid 1px #b7b7b7;
+      border-bottom: solid 1PX #b7b7b7;
       img {
         width: 1.2rem;
         height: 1.2rem;

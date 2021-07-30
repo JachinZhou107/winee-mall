@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-28 16:35:03
+ * @LastEditTime: 2021-07-30 09:18:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\Docker.vue
@@ -51,7 +51,7 @@ export default {
   bottom: 0;
   width: 100%;
   height: 0.49rem;
-  border-top: 0.01px solid #f1f1f1;
+  border-top: 0.01PX solid #f1f1f1;
   background-color: #f1f1f1;
   &__item {
     flex: 1;

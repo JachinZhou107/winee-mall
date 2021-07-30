@@ -79,10 +79,10 @@ export default {
     color: #333333;
     text-decoration: none;
     box-sizing: border-box;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1PX solid #f1f1f1;
     width: 50%;
     &:nth-child(2n+1) {
-      border-right: 1px solid #f1f1f1f1;
+      border-right: 1PX solid #f1f1f1f1;
     }
   }
 }
