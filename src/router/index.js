@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:09:32
+ * @LastEditTime: 2021-07-30 10:53:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\router\index.js
@@ -34,6 +34,11 @@ const routes = [
     path: '/product-list',
     name: 'ProductList',
     component: () => import(/* webpackChunkName: "product-list" */ '../views/productList/ProductList')
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: () => import(/* webpackChunkName: "product-list" */ '../views/user/User')
   },
   {
     path: '/login',

@@ -23,7 +23,7 @@ import Content from './Content'
 import Docker from '../../components/Docker'
 
 export default {
-  name: 'Shop',
+  name: 'Category',
   components: {
     Content,
     Docker
