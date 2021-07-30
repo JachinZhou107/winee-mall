@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:53:04
+ * @LastEditTime: 2021-07-30 15:46:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\router\index.js
@@ -11,9 +11,10 @@ import { Toast } from 'vant'
 import { post } from '../utils/request'
 
 const getLoginStatus = async () => {
-  const result = await post('/api/user/getUser', {})
+  const result = await post('/api/getUser', {})
   if (result?.status === 10000) { return 1 } else return 0
 }
+
 const routes = [
   {
     path: '/',
@@ -78,7 +79,11 @@ router.beforeEach((to, from, next) => {
   getLoginStatus()
     .then((res) => {
       const isLogin = res
-      if (isLogin || to.name === 'Login' || to.name === 'Register' || to.name === 'Home') { next() } else {
+      if (isLogin || to.name === 'Login' || to.name === 'Register' || to.name === 'Home') {
+        if (to.path === '/home') {
+          next({ name: 'Home' })
+        } else next()
+      } else {
         Toast.fail('请先登录')
         next({ name: 'Login' })
       }
