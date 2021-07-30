@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 09:18:16
+ * @LastEditTime: 2021-07-30 10:59:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\Docker.vue
@@ -46,6 +46,7 @@ export default {
   display: flex;
   position: absolute;
   box-sizing: border-box;
+  overflow: hidden;
   padding: 0 0.18rem;
   left: 0;
   bottom: 0;
@@ -57,7 +58,7 @@ export default {
     flex: 1;
     text-align: center;
     .iconfont {
-      font-size: 0.18rem;
+      font-size: 0.2rem;
       margin: 0.07rem 0 0.02rem 0;
     }
     &--active {
@@ -66,7 +67,7 @@ export default {
   }
   &__title {
     font-size: 0.2rem;
-    transform: scale(0.5, 0.5);
+    transform: scale(0.6, 0.6);
     transform-origin: center top;
   }
   a {

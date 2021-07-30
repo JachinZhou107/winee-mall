@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:10:07
+ * @LastEditTime: 2021-07-30 10:42:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\main.js
@@ -17,7 +17,8 @@ import {
   PullRefresh,
   DropdownMenu,
   DropdownItem,
-  Toast
+  Toast,
+  NavBar
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -34,5 +35,6 @@ createApp(App)
   .use(PullRefresh)
   .use(DropdownMenu)
   .use(DropdownItem)
+  .use(NavBar)
   .use(Toast)
   .mount('#app')
