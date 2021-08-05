@@ -2,25 +2,34 @@
   <van-nav-bar
     title="购物车"
   />
-  <div class="cart-body">
+  <div class="cart__body">
+    <div class="cart__selectAll">
+      <div>
+        <van-radio @click="selectAll"/>
+        <span>全选</span>
+      </div>
+      <div>
+        <span>···</span>
+      </div>
+    </div>
     <van-checkbox-group @change="groupChange" v-model="result" ref="checkboxGroup">
       <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
         <div class="good-item">
-          <van-checkbox :name="item.cartItemId" />
-          <div class="good-img"><img :src="$filters.prefix(item.goodsCoverImg)" alt=""></div>
+          <van-checkbox :name="item.id" />
+          <div class="good-img"><img :src="item.productMainImage" alt=""></div>
           <div class="good-desc">
             <div class="good-title">
-              <span>{{ item.goodsName }}</span>
-              <span>x{{ item.goodsCount }}</span>
+              <span>{{ item.productName }}</span>
+              <span>x{{ item.quantity }}</span>
             </div>
             <div class="good-btn">
-              <div class="price">¥{{ item.sellingPrice }}</div>
+              <div class="price">¥{{ item.productPrice }}</div>
               <van-stepper
                 integer
                 :min="1"
                 :max="5"
-                :model-value="item.goodsCount"
-                :name="item.cartItemId"
+                :model-value="item.quantity"
+                :name="item.id"
                 async-change
                 @change="onChange"
               />
@@ -33,7 +42,7 @@
             icon="delete"
             type="danger"
             class="delete-button"
-            @click="deleteGood(item.cartItemId)"
+            @click="deleteGood(item.id)"
           />
         </template>
       </van-swipe-cell>
@@ -64,41 +73,13 @@
 </template>
 
 <script>
-import { computed, toRefs, reactive } from 'vue'
+import { computed, toRefs, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 
 import Docker from '../../components/Docker'
-
-const useCart = () => {
-  const store = useStore()
-  const route = useRoute()
-  const shopId = route.params.id
-  const cartList = store.state.cartList
-  const total = computed(() => {
-    const productList = cartList[shopId]
-    let count = 0
-    if (productList) {
-      for (const i in productList) {
-        const product = productList[i]
-        count += product.count
-      }
-    }
-    return count
-  })
-  const price = computed(() => {
-    const productList = cartList[shopId]
-    let count = 0
-    if (productList) {
-      for (const i in productList) {
-        const product = productList[i]
-        count += (product.count * product.price)
-      }
-    }
-    return count.toFixed(2)
-  })
-  return { total, price }
-}
+import { get } from '../../utils/request'
 
 export default {
   name: 'Cart',
@@ -106,7 +87,8 @@ export default {
     Docker
   },
   setup () {
-    const { total, price } = useCart()
+    const router = useRouter()
+    const store = useStore()
     const state = reactive({
       checked: false,
       list: [],
@@ -114,6 +96,88 @@ export default {
       result: [],
       checkAll: true
     })
+
+    onMounted(() => {
+      console.log('onMounted')
+      init()
+    })
+
+    // const getCart = async () => {
+    //   const { data } = await get('/product/list')
+    //   console.log(data)
+    //   return data
+    // }
+    const modifyCart = () => {
+      return 1
+    }
+    const deleteCartItem = () => {
+      return {}
+    }
+    const init = async () => {
+      Toast.loading({ message: '加载中...', forbidClick: true })
+      const { data: { cartProductList } } = await get('/cart/list')
+      Toast.clear()
+      state.list = cartProductList
+      state.result = cartProductList.map(item => item.id)
+      console.log(state.list, state.result)
+    }
+
+    const total = computed(() => {
+      let sum = 0
+      const _list = state.list.filter(item => state.result.includes(item.id))
+      _list.forEach(item => {
+        sum += item.goodsCount * item.sellingPrice
+      })
+      return sum
+    })
+
+    const goBack = () => {
+      router.go(-1)
+    }
+
+    const goTo = () => {
+      router.push({ path: '/home' })
+    }
+
+    const onChange = async (value, detail) => {
+      if (value > 5) {
+        Toast.fail('超出单个商品的最大购买数量')
+        return
+      }
+      if (value < 1) {
+        Toast.fail('商品不得小于0')
+        return
+      }
+      if (state.list.filter(item => item.id === detail.name)[0].goodsCount === value) return
+      Toast.loading({ message: '修改中...', forbidClick: true })
+      const params = {
+        id: detail.name,
+        goodsCount: value
+      }
+      await modifyCart(params)
+      state.list.forEach(item => {
+        if (item.id === detail.name) {
+          item.goodsCount = value
+        }
+      })
+      Toast.clear()
+    }
+
+    const onSubmit = async () => {
+      if (state.result.length === 0) {
+        Toast.fail('请选择商品进行结算')
+        return
+      }
+      const params = JSON.stringify(state.result)
+      router.push({ path: '/create-order', query: { ids: params } })
+    }
+
+    const deleteGood = async (id) => {
+      await deleteCartItem(id)
+      store.dispatch('updateCart')
+      init()
+    }
+
     const groupChange = (result) => {
       console.log(1)
       if (result.length === state.list.length) {
@@ -125,7 +189,26 @@ export default {
       }
       state.result = result
     }
-    return { ...toRefs(state), total, price, groupChange }
+
+    const allCheck = () => {
+      if (!state.checkAll) {
+        state.result = state.list.map(item => item.id)
+      } else {
+        state.result = []
+      }
+    }
+
+    return {
+      ...toRefs(state),
+      total,
+      goBack,
+      goTo,
+      onChange,
+      onSubmit,
+      deleteGood,
+      groupChange,
+      allCheck
+    }
   }
 }
 </script>

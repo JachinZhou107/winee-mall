@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 15:32:21
+ * @LastEditTime: 2021-08-05 18:25:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\main.js
@@ -28,7 +28,8 @@ import {
   ActionBar, ActionBarIcon, ActionBarButton,
   Checkbox, CheckboxGroup,
   Stepper,
-  Button
+  Button,
+  Radio
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -68,5 +69,6 @@ createApp(App)
   .use(CheckboxGroup)
   .use(Stepper)
   .use(Button)
+  .use(Radio)
   .use(Toast)
   .mount('#app')
