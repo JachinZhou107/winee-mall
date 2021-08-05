@@ -11,7 +11,8 @@ import { Toast } from 'vant'
 import { post } from '../utils/request'
 
 const getLoginStatus = async () => {
-  const result = await post('/api/getUser', {})
+  // return 1
+  const result = await post('/user/getUser')
   if (result?.status === 10000) { return 1 } else return 0
 }
 
@@ -35,6 +36,11 @@ const routes = [
     path: '/product-list',
     name: 'ProductList',
     component: () => import(/* webpackChunkName: "product-list" */ '../views/productList/ProductList')
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Cart')
   },
   {
     path: '/user',
@@ -61,8 +67,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       getLoginStatus()
         .then((res) => {
-          const isLogin = res
-          console.log(isLogin);
+          const isLogin = res;
           (isLogin ? next({ name: 'Home' }) : next())
         })
     }
@@ -75,7 +80,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to, from)
   getLoginStatus()
     .then((res) => {
       const isLogin = res

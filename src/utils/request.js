@@ -9,14 +9,17 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  // baseURL: 'https://www.fastmock.site/mock/ae8e9031947a302fed5f92425995aa19/jd',
-  baseURL: 'https://www.fastmock.site/mock/a57e273033cfba677dffd0668818a17d/jd',
-  timeout: 12000
+  // baseURL: 'https://www.fastmock.site/mock/a57e273033cfba677dffd0668818a17d/jd',
+  baseURL: 'https://zackyj.mynatapp.cc',
+  timeout: 12000,
+  withCredentials: true
 })
 
-export const post = (url, data) => {
+export const post = (url, data, config) => {
   return new Promise((resolve, reject) => {
+    console.log(config)
     instance.post(url, data, {
+      ...config,
       headers: {
         'Content-Type': 'application/json'
       }

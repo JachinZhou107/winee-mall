@@ -74,7 +74,7 @@ export default {
     text-align: center;
     font-weight: normal;
     color: #2682be;
-    background-color: #f1f1f1;
+    background-color: #f4f4f4;
   }
   &__box {
     display: flex;

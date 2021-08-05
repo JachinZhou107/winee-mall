@@ -8,22 +8,20 @@
 -->
 <template>
   <div class="categories__box">
-    <div
-      class="categories__item"
-      v-for="(secItem,index) in item.secondLevelCategoryVOS"
-      :key="index"
-    >
-      <h3 class="categories__title">{{secItem.categoryName}}</h3>
-      <div class="category__box">
-        <div
-          class="category__item"
-          v-for="(thiItem,index) in secItem.thirdLevelCategoryVOS"
-          :key="index"
-          @click="handleSelectCategory(thiItem.categoryId)"
+    <h3 class="categories__title">{{item.name}}</h3>
+    <div class="category__box">
+      <div
+        class="category__item"
+        v-for="(secItem,index) in item.childCategory"
+        :key="index"
+        @click="handleSelectCategory(secItem.id)"
+      >
+        <img
+          src="//s.weituibao.com/1583591077131/%E5%88%86%E7%B1%BB.png"
+          alt=""
+          class="category__item__img"
         >
-          <img src="//s.weituibao.com/1583591077131/%E5%88%86%E7%B1%BB.png" alt="" class="category__item__img">
-          <p class="category__item__name">{{thiItem.categoryName}}</p>
-        </div>
+        <p class="category__item__name">{{secItem.name}}</p>
       </div>
     </div>
   </div>
@@ -54,11 +52,10 @@ export default {
 @import '../style/mixins.scss';
 .categories {
   &__box {
+    box-sizing: border-box;
+    padding: .1rem .2rem;
     width: 100%;
     font-size: .14rem;
-  }
-  &__item {
-    padding: .16rem .16rem 0 .16rem;
   }
   &__title {
     margin: 0 0 .15rem 0;

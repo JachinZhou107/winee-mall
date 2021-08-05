@@ -1,9 +1,12 @@
-:root {
-  --van-dropdown-menu-box-shadow: 0px 6px 16px -18px #000 !important;
-}
 html {
   font-size: 100px;
 }
 body {
   font-size: 12px;
+}
+// Vant 样式组件变量
+:root {
+  --van-dropdown-menu-box-shadow: 0 .06rem .16rem -0.18rem #000 !important;
+  --van-sidebar-selected-border-color: #1fa4fc !important;
+  --van-collapse-item-content-padding: 0 0 0 .1rem !important;
 }

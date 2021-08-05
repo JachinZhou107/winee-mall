@@ -49,9 +49,9 @@
             <div class="product__item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
               <img :src="'http://backend-api-01.newbee.ltd'+item.goodsCoverImg" />
               <div class="product__item__info">
-                <p class="product__item__name">{{item.goodsName}}</p>
-                <p class="product__item__subtitle">{{item.goodsIntro}}</p>
-                <span class="product__item__price">￥ {{item.sellingPrice}}</span>
+                <p class="product__item__name">{{item.name}}</p>
+                <p class="product__item__subtitle">{{item.subtitle}}</p>
+                <span class="product__item__price">￥ {{item.price}}</span>
               </div>
             </div>
           </template>
@@ -78,13 +78,13 @@ export default {
       searchBtn: false,
       seclectActive: false,
       refreshing: false,
+      select: '',
       list: [],
       loading: false,
       finished: false,
       productList: [],
       totalPage: 0,
       page: 1,
-      select: '',
       sort: ''
     })
     const option1 = [
@@ -110,7 +110,7 @@ export default {
         state.loading = false
         return
       }
-      const { data, data: { list } } = await get('/api/search',
+      const { data, data: { list } } = await get('/product/list',
         {
           pageNumber: state.page,
           categoryId: categoryId,
@@ -119,10 +119,10 @@ export default {
           sortOrder: state.sort.split('&')[1]
         })
       state.productList = state.productList.concat(list)
-      state.totalPage = data.totalPage
+      state.totalPage = data.pages
       state.refreshing = false
       state.loading = false
-      if (state.page >= data.totalPage) state.finished = true
+      if (state.page >= data.pages) state.finished = true
     }
 
     const handleGoBack = () => {
@@ -130,7 +130,7 @@ export default {
     }
 
     const productDetail = (item) => {
-      router.push({ path: `/product/${item.goodsId}` })
+      router.push({ path: `/product-detail/${item.id}` })
     }
 
     const onLoad = () => {
@@ -184,7 +184,8 @@ export default {
 .wrapper {
   padding: 0 .18rem;
   .header {
-    position: fixed;
+    position: absolute;
+    top: 0;
     z-index: 999;
     margin: 0 -0.18rem;
     width: 100%;
@@ -279,7 +280,7 @@ export default {
       justify-content: space-between;
       padding: .12rem;
       box-sizing: border-box;
-      border-bottom: solid 1PX #b7b7b7;
+      border-bottom: solid 1PX #f1f1f1;
       img {
         width: 1.2rem;
         height: 1.2rem;
@@ -296,7 +297,7 @@ export default {
         @include ellipsis;
       }
       &__subtitle {
-        color: #b7b7b7;
+        color: #b1b1b1;
         font-size: .14rem;
         @include ellipsis;
       }

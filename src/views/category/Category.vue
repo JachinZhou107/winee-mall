@@ -14,7 +14,7 @@
   </div>
   <Content />
 </div>
-<Docker currentPage="category"/>
+<Docker currentPage="1"/>
 </template>
 
 <script>

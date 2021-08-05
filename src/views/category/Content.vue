@@ -8,15 +8,13 @@
 -->
 <template>
   <div class="content">
-    <ul class="category">
-      <li
-        v-for="(item,index) in contentList"
-        :key="item.categoryId"
-        :class="{'category__item':true,
-        'category__item--active': curTab===index}"
-        @click="handleCategoryClick(index)"
-      >{{item.categoryName}}</li>
-    </ul>
+    <van-sidebar v-model="curTab">
+      <van-sidebar-item
+        v-for="item in contentList"
+        :key="item.id"
+        :title="item.name"
+      />
+    </van-sidebar>
     <div class="product">
       <template
         v-for="(item,index) in contentList"
@@ -45,16 +43,14 @@ const useCategories = () => {
       message: '加载中',
       forbidClick: true
     })
-    const result = await get('/api/categories')
+    const result = await get('/category/list')
+    // console.log(result.data)
     data.contentList = result.data
     data.curTab = 0
     Toast.clear()
   }
-  const handleCategoryClick = (tab) => {
-    data.curTab = tab
-  }
   const { contentList, curTab } = toRefs(data)
-  return { contentList, curTab, getContentData, handleCategoryClick }
+  return { contentList, curTab, getContentData }
 }
 
 export default {
@@ -63,9 +59,9 @@ export default {
     CategoriesInfo
   },
   setup () {
-    const { contentList, curTab, getContentData, handleCategoryClick } = useCategories()
+    const { contentList, curTab, getContentData } = useCategories()
     getContentData()
-    return { contentList, curTab, handleCategoryClick }
+    return { contentList, curTab }
   }
 }
 </script>
@@ -79,25 +75,8 @@ export default {
   top: .65rem;
   bottom: .5rem;
 }
-.category {
-  width: 1.16rem;
-  height: 100%;
-  overflow-y: scroll;
-  background-color: #f5f5f5;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  &__item  {
-    padding: .02rem;
-    height: .45rem;
-    text-align: center;
-    font-size: .14rem;
-    line-height: .5rem;
-    color: #333333;
-    &--active {
-      background-color: #fff;
-    }
-  }
+.van-sidebar {
+  background-color: #f7f8fa;
 }
 .product {
   flex: 1;

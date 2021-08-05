@@ -11,17 +11,24 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import {
-  Tabs,
-  Tab,
+  Icon,
+  Tabs, Tab,
   List,
   PullRefresh,
-  DropdownMenu,
-  DropdownItem,
+  DropdownMenu, DropdownItem,
   Toast,
   NavBar,
   Image as VanImage,
-  Cell,
-  CellGroup
+  Cell, CellGroup,
+  Grid, GridItem,
+  Swipe, SwipeItem, SwipeCell,
+  Sidebar, SidebarItem,
+  Tabbar, TabbarItem,
+  Collapse, CollapseItem,
+  ActionBar, ActionBarIcon, ActionBarButton,
+  Checkbox, CheckboxGroup,
+  Stepper,
+  Button
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -32,6 +39,7 @@ Toast.setDefaultOptions({ duration: 1000 })
 createApp(App)
   .use(store)
   .use(router)
+  .use(Icon)
   .use(Tabs)
   .use(Tab)
   .use(List)
@@ -42,5 +50,23 @@ createApp(App)
   .use(VanImage)
   .use(Cell)
   .use(CellGroup)
+  .use(Grid)
+  .use(GridItem)
+  .use(Swipe)
+  .use(SwipeItem)
+  .use(Sidebar)
+  .use(SidebarItem)
+  .use(SwipeCell)
+  .use(Tabbar)
+  .use(TabbarItem)
+  .use(Collapse)
+  .use(CollapseItem)
+  .use(ActionBar)
+  .use(ActionBarIcon)
+  .use(ActionBarButton)
+  .use(Checkbox)
+  .use(CheckboxGroup)
+  .use(Stepper)
+  .use(Button)
   .use(Toast)
   .mount('#app')
