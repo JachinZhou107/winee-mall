@@ -48,7 +48,7 @@ const useRegister = (showToast) => {
   })
   const handleRegister = async () => {
     try {
-      const result = await post('/api/user/register', {
+      const result = await post('/user/register', {
         username: data.username,
         password: data.password1
       })

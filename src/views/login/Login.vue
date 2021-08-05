@@ -39,10 +39,12 @@ const useLogin = () => {
   })
   const handleLogin = async () => {
     try {
-      const result = await post('/api/user/login', {
+      const config = {}
+      config.params = {
         username: data.username,
         password: data.password
-      })
+      }
+      const result = await post('/user/login', {}, config)
       if (result?.status === 10000) {
         router.push({ name: 'Home' })
       } else {

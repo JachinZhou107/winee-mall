@@ -13,7 +13,7 @@
     <NearBy name="热销商品" />
     <NearBy name="最新推荐" />
   </div>
-  <Docker current-page="home"/>
+  <Docker currentPage="0"/>
 </template>
 <script>
 import StaticPart from './StaticPart'

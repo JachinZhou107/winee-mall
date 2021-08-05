@@ -29,16 +29,22 @@
       <van-cell-group>
         <van-cell title="订单管理" is-link to="home" />
         <van-cell title="地址管理" is-link to="home" />
-        <van-cell title="账号管理" is-link to="home" />
+        <van-collapse v-model="activeNames">
+          <van-collapse-item title="账号管理" name="1">
+            <van-cell title="修改资料" is-link to="setting" />
+            <van-cell title="退出登录" @click="handleLogout"/>
+          </van-collapse-item>
+        </van-collapse>
       </van-cell-group>
     </div>
   </div>
-  <Docker />
+  <Docker current-page='3'/>
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
-import { post } from '../../utils/request'
+import { reactive, toRefs, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { post, get } from '../../utils/request'
 import aHeader from '../../components/aHeader'
 import Docker from '../../components/Docker'
 
@@ -55,16 +61,24 @@ export default {
       email: '',
       phone: ''
     })
+    const activeNames = ref([])
     const getUserData = async () => {
-      const result = await post('/api/getUser', {})
+      const result = await post('/user/getUser')
       userData.username = result.data.username
       userData.password = result.data.password
       userData.email = result.data.email
       userData.phone = result.data.phone
     }
     getUserData()
+    const router = useRouter()
+    const handleLogout = async () => {
+      const result = await get('/user/logout')
+      if (result.status === 10000) { router.push({ name: 'Home' }) }
+    }
     return {
-      ...toRefs(userData)
+      ...toRefs(userData),
+      activeNames,
+      handleLogout
     }
   }
 }
