@@ -29,7 +29,8 @@ import {
   Checkbox, CheckboxGroup,
   Stepper,
   Button,
-  Radio
+  Radio,
+  SubmitBar
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -70,5 +71,6 @@ createApp(App)
   .use(Stepper)
   .use(Button)
   .use(Radio)
+  .use(SubmitBar)
   .use(Toast)
   .mount('#app')

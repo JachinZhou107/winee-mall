@@ -1,23 +1,23 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-29 10:37:05
+ * @LastEditTime: 2021-08-06 11:04:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\ProductInfo.vue
 -->
 <template>
   <div class="shop">
-    <img :src="item.imgUrl"
+    <img :src="item.mainImage"
       class="shop__img">
     <div :class="{'shop__content':true}"
     >
       <div class="shop__content__title">{{item.name}}</div>
       <div class="shop__content__tags">
-        <span class="shop__content__price">¥{{item.sellingPrice}}</span>
-        <span class="shop__content__tag">月售{{item.sales}}+</span>
+        <span class="shop__content__price">¥{{item.price}}</span>
+        <span class="shop__content__tag">月售{{item.sales||99}}+</span>
       </div>
-      <p class="shop__content__highlight"><em>{{item.slogan}}</em></p>
+      <p class="shop__content__highlight"><em>{{item.subtitle}}</em></p>
     </div>
   </div>
 </template>

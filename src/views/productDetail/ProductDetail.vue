@@ -59,7 +59,7 @@ import { useStore } from 'vuex'
 import { Toast } from 'vant'
 
 import aHeader from '../../components/aHeader.vue'
-import { get } from '../../utils/request'
+import { get, post } from '../../utils/request'
 
 export default {
   name: 'ProductDetail',
@@ -105,7 +105,13 @@ export default {
       return { resultCode: 200 }
     }
     const handleAddCart = async () => {
-      const { resultCode } = await addCart({ goodsCount: 1, goodsId: state.detail.goodsId })
+      const { id } = route.params
+      const { resultCode } = await post('/cart/add', {}, {
+        params: {
+          count: 1,
+          productId: id
+        }
+      })
       if (resultCode === 200) Toast.success('添加成功')
       store.dispatch('updateCart')
     }

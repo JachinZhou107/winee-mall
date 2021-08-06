@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:15:12
+ * @LastEditTime: 2021-08-06 11:03:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -12,8 +12,8 @@
     <div class="nearby__box">
       <router-link
         v-for="item in nearbyList"
-        :key="item._id"
-        :to="`/product-detail/${item._id}`"
+        :key="item.id"
+        :to="`/product-detail/${item.id}`"
       >
         <ProductInfo
           :item="item"
@@ -36,10 +36,10 @@ const useNearbyList = () => {
       message: '加载中',
       forbidClick: true
     })
-    const result = await get('/api/shop/hot-list')
+    const { data } = await get('/portal/hotPdt')
     // console.log(result)
-    if (result?.errno === 0 && result?.data?.length) {
-      nearbyList.value = result.data
+    if (data?.length) {
+      nearbyList.value = data
     }
     Toast.clear()
   }

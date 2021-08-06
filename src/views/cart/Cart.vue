@@ -3,33 +3,24 @@
     title="购物车"
   />
   <div class="cart__body">
-    <div class="cart__selectAll">
-      <div>
-        <van-radio @click="selectAll"/>
-        <span>全选</span>
-      </div>
-      <div>
-        <span>···</span>
-      </div>
-    </div>
     <van-checkbox-group @change="groupChange" v-model="result" ref="checkboxGroup">
       <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
-        <div class="good-item">
+        <div class="good__item">
           <van-checkbox :name="item.id" />
-          <div class="good-img"><img :src="item.productMainImage" alt=""></div>
-          <div class="good-desc">
-            <div class="good-title">
+          <div class="good__img"><img :src="item.productMainImage" alt=""></div>
+          <div class="good__desc">
+            <div class="good__title">
               <span>{{ item.productName }}</span>
               <span>x{{ item.quantity }}</span>
             </div>
-            <div class="good-btn">
+            <div class="good__btn">
               <div class="price">¥{{ item.productPrice }}</div>
               <van-stepper
                 integer
                 :min="1"
                 :max="5"
                 :model-value="item.quantity"
-                :name="item.id"
+                :name="item.productId"
                 async-change
                 @change="onChange"
               />
@@ -42,7 +33,7 @@
             icon="delete"
             type="danger"
             class="delete-button"
-            @click="deleteGood(item.id)"
+            @click="deleteGood(item.productId)"
           />
         </template>
       </van-swipe-cell>
@@ -53,7 +44,16 @@
     <div class="title">购物车空空如也</div>
     <van-button round color="linear-gradient(to left, #39bdce, #0099ff)" type="primary" @click="goTo" block>前往选购</van-button>
   </div>
-  <div class="cart">
+  <van-submit-bar
+    v-if="list.length > 0"
+    class="submit-all van-hairline--top"
+    :price="total * 100"
+    button-text="结算"
+    @submit="onSubmit"
+  >
+    <van-checkbox @click="allCheck" v-model:checked="checkAll">全选</van-checkbox>
+  </van-submit-bar>
+  <!-- <div class="cart">
     <div class="check">
       <div class="check__icon">
         <img
@@ -68,18 +68,18 @@
       </div>
       <div class="check__button">去结算</div>
     </div>
-  </div>
+  </div> -->
   <Docker />
 </template>
 
 <script>
 import { computed, toRefs, reactive, onMounted } from 'vue'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
 
 import Docker from '../../components/Docker'
-import { get } from '../../utils/request'
+import { get, post } from '../../utils/request'
 
 export default {
   name: 'Cart',
@@ -88,7 +88,7 @@ export default {
   },
   setup () {
     const router = useRouter()
-    const store = useStore()
+    // const store = useStore()
     const state = reactive({
       checked: false,
       list: [],
@@ -107,12 +107,6 @@ export default {
     //   console.log(data)
     //   return data
     // }
-    const modifyCart = () => {
-      return 1
-    }
-    const deleteCartItem = () => {
-      return {}
-    }
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true })
       const { data: { cartProductList } } = await get('/cart/list')
@@ -126,7 +120,7 @@ export default {
       let sum = 0
       const _list = state.list.filter(item => state.result.includes(item.id))
       _list.forEach(item => {
-        sum += item.goodsCount * item.sellingPrice
+        sum += item.quantity * item.productPrice
       })
       return sum
     })
@@ -148,16 +142,18 @@ export default {
         Toast.fail('商品不得小于0')
         return
       }
-      if (state.list.filter(item => item.id === detail.name)[0].goodsCount === value) return
+      if (state.list.filter(item => item.productId === detail.name)[0].quantity === value) return
       Toast.loading({ message: '修改中...', forbidClick: true })
       const params = {
-        id: detail.name,
-        goodsCount: value
+        productId: detail.name,
+        count: value
       }
-      await modifyCart(params)
+      await post('/cart/update', {}, {
+        params: params
+      })
       state.list.forEach(item => {
-        if (item.id === detail.name) {
-          item.goodsCount = value
+        if (item.productId === detail.name) {
+          item.quantity = value
         }
       })
       Toast.clear()
@@ -173,8 +169,12 @@ export default {
     }
 
     const deleteGood = async (id) => {
-      await deleteCartItem(id)
-      store.dispatch('updateCart')
+      await post('/cart/delete', {}, {
+        params: {
+          productId: id
+        }
+      })
+      // store.dispatch('updateCart')
       init()
     }
 
@@ -217,25 +217,25 @@ export default {
 .cart__body {
   margin: 16px 0 100px 0;
   padding-left: 10px;
-  .good-item {
+  .good__item {
     display: flex;
-    .good-img {
+    .good__img {
       img {
         width: 1rem;
         height: 1rem;
       }
     }
-    .good-desc {
+    .good__desc {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
       padding: 20px;
-      .good-title {
+      .good__title {
         display: flex;
         justify-content: space-between;
       }
-      .good-btn {
+      .good__btn {
         display: flex;
         justify-content: space-between;
         .price {
@@ -279,56 +279,8 @@ export default {
   bottom: 0.51rem;
   border-bottom: 1px solid #f1f1f1;
 }
-.check {
-  display: flex;
-  height: .5rem;
-  border-top: solid .01rem #f1f1f1;
-  line-height: .5rem;
-  &__icon {
-    width: .84rem;
-    position: relative;
-    &__img {
-      height: .26rem;
-      width: .28rem;
-      display: block;
-      margin: .12rem auto;
-    }
-    &__tag {
-      width: auto;
-      min-width: .2rem;
-      height: 0.2rem;
-      text-align: center;
-      line-height: 0.2rem;
-      position: absolute;
-      top: 0.02rem;
-      left: 0.48rem;
-      font-size: 0.16rem;
-      color: white;
-      border-radius: .1rem;
-      background-color: #E93B3B;
-      transform: scale(.5);
-      transform-origin: left center;
-    }
-  }
-  &__info {
-    flex: 1;
-    &__title {
-      font-size: .12rem;
-      color: #333;
-      text-align: center;
-    }
-    &__price {
-      font-size: .18rem;
-      color: #E93B3B;
-      text-align: center;
-    }
-  }
-  &__button {
-    width: .98rem;
-    color: white;
-    font-size: .14rem;
-    text-align: center;
-    background: linear-gradient(to right, #47b1ee, #3883e4);
-  }
+.van-submit-bar {
+  position: absolute;
+  bottom: .51rem;
 }
 </style>
