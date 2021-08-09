@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:55:01
- * @LastEditTime: 2021-08-06 10:55:01
+ * @LastEditTime: 2021-08-10 00:39:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\orderDetail.vue
@@ -78,12 +78,13 @@
         <van-button :style="{ marginBottom: '10px' }" color="#1989fa" block @click="handlePayOrder(detail.orderNo, 1)">支付宝支付</van-button>
         <van-button color="#4fc08d" block @click="handlePayOrder(detail.orderNo, 2)">微信支付</van-button>
       </div>
+      <div v-html="payPage"></div>
     </van-popup>
   </div>
 </template>
 
 <script>
-import { reactive, toRefs, onMounted } from 'vue'
+import { reactive, toRefs, onMounted, nextTick } from 'vue'
 import { Dialog, Toast } from 'vant'
 import { useRoute } from 'vue-router'
 
@@ -100,7 +101,8 @@ export default {
     const state = reactive({
       detail: {},
       shipping: {},
-      showPay: false
+      showPay: false,
+      payPage: ''
     })
 
     onMounted(() => {
@@ -142,7 +144,8 @@ export default {
     }
 
     const handlePayOrder = async (id) => {
-      await post('/order/pay', {}, { params: { orderNo: id } })
+      state.payPage = await post('/order/pay', {}, { params: { orderNo: id } })
+      nextTick(function () { document.forms[0].submit() })
       state.showPay = false
     }
 
@@ -164,6 +167,7 @@ export default {
 <style lang="scss" scoped>
   .order-detail-box {
     background: #f7f7f7;
+    margin-top: .5rem;
     .order-status {
       background: #fff;
       padding: 20px;
@@ -189,9 +193,6 @@ export default {
         margin-bottom: 10px;
         label {
           color: #999;
-        }
-        span {
-
         }
       }
     }

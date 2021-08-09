@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-29 21:00:01
+ * @LastEditTime: 2021-08-09 22:44:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\utils\request.js
@@ -9,8 +9,8 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  // baseURL: 'https://zackyj.mynatapp.cc',
-  baseURL: 'https://mall.uuuvw.xyz',
+  baseURL: 'https://nwcts.uuuvw.xyz',
+  // baseURL: 'https://mall.uuuvw.xyz',
   timeout: 12000,
   withCredentials: true
 })

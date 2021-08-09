@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-06 11:03:17
+ * @LastEditTime: 2021-08-09 20:29:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -37,7 +37,7 @@ const useNearbyList = (api) => {
       forbidClick: true
     })
     const { data } = await get(api)
-    if (api === '/portal/nicePdt') { nearbyList.value = data.list } else nearbyList.value = data
+    nearbyList.value = data
     // console.log(result)
     Toast.clear()
   }

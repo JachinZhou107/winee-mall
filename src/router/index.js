@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 15:46:16
+ * @LastEditTime: 2021-08-10 01:35:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\router\index.js
@@ -43,6 +43,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Cart')
   },
   {
+    path: '/order',
+    name: 'Order',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/Order')
+  },
+  {
     path: '/create-order',
     name: 'CreateOrder',
     component: () => import(/* webpackChunkName: "create-order" */ '../views/order/CreateOrder')
@@ -63,6 +68,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "product-list" */ '../views/user/User')
   },
   {
+    path: '/setting',
+    name: 'Setting',
+    component: () => import(/* webpackChunkName: "product-list" */ '../views/user/Setting')
+  },
+  {
     path: '/address',
     name: 'Address',
     component: () => import(/* webpackChunkName: "address" */ '../views/address/Address')
@@ -76,6 +86,19 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/login/Login'),
+    beforeEnter: (to, from, next) => {
+      getLoginStatus()
+        .then((res) => {
+          const isLogin = res
+          console.log(isLogin);
+          (isLogin ? next({ name: 'Home' }) : next())
+        })
+    }
+  },
+  {
+    path: '/code-login',
+    name: 'CodeLogin',
+    component: () => import(/* webpackChunkName: "code-login" */ '../views/login/CodeLogin'),
     beforeEnter: (to, from, next) => {
       getLoginStatus()
         .then((res) => {
@@ -108,7 +131,7 @@ router.beforeEach((to, from, next) => {
   getLoginStatus()
     .then((res) => {
       const isLogin = res
-      if (isLogin || to.name === 'Login' || to.name === 'Register' || to.name === 'Home') {
+      if (isLogin || to.name === 'Login' || to.name === 'CodeLogin' || to.name === 'Register' || to.name === 'Home') {
         if (to.path === '/home') {
           next({ name: 'Home' })
         } else next()

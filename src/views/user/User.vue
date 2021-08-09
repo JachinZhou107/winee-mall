@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:38:30
- * @LastEditTime: 2021-07-30 15:54:19
+ * @LastEditTime: 2021-08-10 00:08:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\user\user.vue
@@ -12,11 +12,11 @@
     <div class="user__info">
       <div class="user__info__img">
         <van-image
-          src="https://s.yezgea02.com/1604040746310/aaaddd.png"
+          :src="face"
           width=".7rem"
           height=".7rem"
           round
-          fit="fill"
+          fit="cover"
         />
       </div>
       <div class="user__info__list">
@@ -27,7 +27,7 @@
     </div>
     <div class="user__list">
       <van-cell-group>
-        <van-cell title="订单管理" is-link to="home" />
+        <van-cell title="订单管理" is-link to="order" />
         <van-cell title="地址管理" is-link @click="goTo('/address', { from: 'mine' })" />
         <van-collapse v-model="activeNames">
           <van-collapse-item title="账号管理" name="1">
@@ -59,7 +59,8 @@ export default {
       username: '',
       password: '',
       email: '',
-      phone: ''
+      phone: '',
+      face: ''
     })
     const activeNames = ref([])
 
@@ -69,6 +70,7 @@ export default {
       userData.password = result.data.password
       userData.email = result.data.email
       userData.phone = result.data.phone
+      userData.face = result.data.face
     }
     getUserData()
 
@@ -97,6 +99,7 @@ export default {
 .wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: .5rem;
   .user__info {
     display: flex;
     align-items: center;

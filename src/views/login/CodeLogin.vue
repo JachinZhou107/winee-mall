@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-10 01:21:16
+ * @LastEditTime: 2021-08-10 01:29:12
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \my-mall\src\views\login\codeLogin.vue
+-->
 <template>
   <div class="wrapper">
     <img src="http://www.dell-lee.com/imgs/vue3/user.png" class="wrapper__img">
@@ -20,9 +28,10 @@
     <div class="wrapper__send">
       <van-button square type="primary" :disabled="waiting<60" @click="handleSend">{{ buttonText+(60-waiting>0?`(${waiting})`:'') }}</van-button>
     </div>
-    <div class="wrapper__register-button" @click="handleRegister">注册</div>
+    <div class="wrapper__register-button" @click="handleLogin">登录</div>
     <div class="wrapper__tools">
-      <span class="wrapper__tools__register" @click="handleGoLogin">已有账号去登录</span>
+      <span class="wrapper__tools__register" @click="handleGoRegister">立即注册</span> |
+      <span class="wrapper__tools__password">忘记密码</span>
     </div>
   </div>
 </template>
@@ -35,7 +44,7 @@ import { Toast } from 'vant'
 import { post, get } from '../../utils/request'
 
 export default {
-  name: 'Register',
+  name: 'CodeLogin',
   setup () {
     const router = useRouter()
     const data = reactive({
@@ -44,18 +53,19 @@ export default {
       buttonText: '发送验证码',
       waiting: 60
     })
-    const handleRegister = async () => {
+    const handleLogin = async () => {
       try {
-        const result = await post('/user/register_phone', {}, {
+        const result = await post('/user/login_phone', {}, {
           params: {
             phone: data.username,
             code: data.password
           }
         })
         if (result.status === 10000) {
-          Toast.success('注册成功')
+          Toast.success('登录成功')
           setTimeout(() => {
-            router.push({ name: 'CodeLogin' })
+            if (!result.username) router.push({ name: 'Setting', query: { from: 'login' } })
+            else router.push({ name: 'Home' })
           }, 2100)
         } else {
           Toast.fail(result.msg)
@@ -64,8 +74,8 @@ export default {
         Toast.fail('请求失败')
       }
     }
-    const handleGoLogin = () => {
-      router.push({ name: 'Login' })
+    const handleGoRegister = () => {
+      router.push({ name: 'Register' })
     }
     let timer = null
     const handleSend = async () => {
@@ -90,8 +100,8 @@ export default {
       }
     }
     return {
-      handleGoLogin,
-      handleRegister,
+      handleGoRegister,
+      handleLogin,
       handleSend,
       ...toRefs(data)
     }

@@ -19,6 +19,7 @@
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登陆</div>
     <div class="wrapper__tools">
+      <span class="wrapper__tools__code-login" @click="handleGoCodeLogin">验证码登录</span> |
       <span class="wrapper__tools__register" @click="handleGoRegister">立即注册</span> |
       <span class="wrapper__tools__password">忘记密码</span>
     </div>
@@ -53,14 +54,6 @@ const useLogin = () => {
     } catch (e) {
       Toast.fail('请求失败')
     }
-
-    // .then(() => {
-    //   alert('成功')
-    //   localStorage.isLogin = true
-    //   router.push({ name: 'Home' })
-    // }).catch(() => {
-    //   alert('失败')
-    // })
   }
 
   const { username, password } = toRefs(data)
@@ -79,9 +72,13 @@ export default {
     const handleGoRegister = () => {
       router.push({ name: 'Register' })
     }
+    const handleGoCodeLogin = () => {
+      router.push({ name: 'CodeLogin' })
+    }
     return {
       handleLogin,
       handleGoRegister,
+      handleGoCodeLogin,
       username,
       password
     }
@@ -142,8 +139,11 @@ export default {
     text-align: center;
     margin-top: 0.16rem;
     font-size: .14rem;
-    &__register {
+    &__code-login {
       padding-right: .12rem;
+    }
+    &__register {
+      padding: 0 .12rem;
     }
     &__password {
       padding-left: .12rem;

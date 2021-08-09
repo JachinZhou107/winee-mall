@@ -39,6 +39,8 @@
         <div class="product__content" v-html="detail.detail || ''"></div>
       </div>
     </div>
+  </div>
+  <div class="cart__docker">
     <van-action-bar>
       <van-action-bar-icon icon="chat-o" text="客服" />
       <van-action-bar-icon icon="cart-o" :badge="!count ? '' : count" @click="goTo()" text="购物车" />
@@ -152,6 +154,13 @@ export default {
 </style>
 <style lang="scss" scoped>
 .product__detail {
+  position: absolute;
+  left: 0;
+  top: .5rem;
+  bottom: .5rem;
+  right: 0;
+  background-color: white;
+  overflow: auto;
   .detail__content {
     overflow: hidden;
     overflow-y: auto;
@@ -216,11 +225,20 @@ export default {
       }
     }
   }
+}
+
+.cart__docker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: 9;
   .van-action-bar-button--warning {
     background: linear-gradient(to left, #39bdce, #0099ff)
   }
   .van-action-bar-button--danger {
-    background: linear-gradient(to right, #6eb8e2, #3883e4)
+    background: linear-gradient(to right, #6ea0e2, #2478e7)
   }
 }
 </style>

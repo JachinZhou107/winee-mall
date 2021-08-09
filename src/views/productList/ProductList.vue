@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 18:38:19
- * @LastEditTime: 2021-07-29 19:58:19
+ * @LastEditTime: 2021-08-09 21:42:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productList\ProductList.vue
@@ -113,6 +113,7 @@ export default {
       const { data, data: { list } } = await get('/product/list',
         {
           pageNumber: state.page,
+          pageSize: 20,
           categoryId: categoryId,
           keyword: state.keywords,
           sortBy: state.sort.split('&')[0],

@@ -13,12 +13,12 @@
       >
         <div class="good__item">
           <van-checkbox :name="item.productId" @click="checkOne(item)" />
-          <div class="good__img">
+          <div class="good__img" @click="goTo(`/product-detail/${item.productId}`)">
             <img :src="item.productMainImage" alt="" />
           </div>
           <div class="good__desc">
             <div class="good__title">
-              <span>{{ item.productName }}</span>
+              <span class="van-multi-ellipsis--l2">{{ item.productName }}</span>
               <span>x{{ item.quantity }}</span>
             </div>
             <div class="good__btn">
@@ -46,22 +46,22 @@
         </template>
       </van-swipe-cell>
     </van-checkbox-group>
-  </div>
-  <div class="empty" v-if="!list.length">
-    <img
-      class="empty-cart"
-      src="https://s.yezgea02.com/1604028375097/empty-car.png"
-      alt="空购物车"
-    />
-    <div class="title">购物车空空如也</div>
-    <van-button
-      round
-      color="linear-gradient(to left, #39bdce, #0099ff)"
-      type="primary"
-      @click="goTo"
-      block
-      >前往选购</van-button
-    >
+    <div class="empty" v-if="!list.length">
+      <img
+        class="empty-cart"
+        src="https://s.yezgea02.com/1604028375097/empty-car.png"
+        alt="空购物车"
+      />
+      <div class="title">购物车空空如也</div>
+      <van-button
+        round
+        color="linear-gradient(to left, #39bdce, #0099ff)"
+        type="primary"
+        @click="goTo('/home')"
+        block
+        >前往选购</van-button
+      >
+    </div>
   </div>
   <van-submit-bar
     v-if="list.length > 0"
@@ -74,22 +74,6 @@
       >全选</van-checkbox
     >
   </van-submit-bar>
-  <!-- <div class="cart">
-    <div class="check">
-      <div class="check__icon">
-        <img
-          src="http://www.dell-lee.com/imgs/vue3/basket.png"
-          class="check__icon__img"
-        >
-        <div class="check__icon__tag">{{total}}</div>
-      </div>
-      <div class="check__info">
-        <span class="check__info__title">总计：</span>
-        <span class="check__info__price">&yen; {{price}}</span>
-      </div>
-      <div class="check__button">去结算</div>
-    </div>
-  </div> -->
   <Docker currentPage="2" />
 </template>
 
@@ -157,8 +141,8 @@ export default {
       router.go(-1)
     }
 
-    const goTo = () => {
-      router.push({ path: '/home' })
+    const goTo = (path) => {
+      router.push({ path })
     }
 
     const checkOne = async ({ productId }) => {
@@ -279,11 +263,22 @@ export default {
   }
 }
 </script>
-
+<style lang="scss">
+.cart__body {
+  .van-checkbox {
+    padding-right: .05rem;
+  }
+}
+</style>
 <style lang="scss" scpoed>
 .cart__body {
-  margin: 16px 0 100px 0;
-  padding-left: 10px;
+  overflow: auto;
+  margin-left: 0.1rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  top: .5rem;
   .good__item {
     display: flex;
     .good__img {
@@ -297,10 +292,17 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
-      padding: 20px;
+      padding: .1rem .2rem;
       .good__title {
         display: flex;
         justify-content: space-between;
+        font-size: .14rem;
+        span:first-child {
+          padding-right: .05rem;
+        }
+        span:last-child {
+          padding-left: .05rem;
+        }
       }
       .good__btn {
         display: flex;

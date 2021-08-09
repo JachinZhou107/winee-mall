@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:16:40
+ * @LastEditTime: 2021-08-09 23:38:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\category\Content.vue
@@ -31,7 +31,7 @@ import { reactive, toRefs } from 'vue'
 import { Toast } from 'vant'
 
 import { get } from '../../utils/request'
-import CategoriesInfo from '../../components/CategoriesInfo'
+import CategoriesInfo from './CategoriesInfo.vue'
 
 const useCategories = () => {
   const data = reactive({
@@ -77,6 +77,7 @@ export default {
 }
 .van-sidebar {
   background-color: #f7f8fa;
+  width: 1rem;
 }
 .product {
   flex: 1;

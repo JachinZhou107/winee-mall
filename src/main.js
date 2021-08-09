@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-05 18:25:33
+ * @LastEditTime: 2021-08-09 23:23:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\main.js
@@ -34,7 +34,9 @@ import {
   SubmitBar,
   AddressList, AddressEdit,
   Popup,
-  Pagination
+  Pagination,
+  Field,
+  Uploader
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -81,6 +83,8 @@ createApp(App)
   .use(AddressEdit)
   .use(Pagination)
   .use(Popup)
+  .use(Field)
+  .use(Uploader)
   .use(Dialog)
   .use(Toast)
   .mount('#app')

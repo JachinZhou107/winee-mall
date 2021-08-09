@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:54:50
- * @LastEditTime: 2021-08-06 10:54:51
+ * @LastEditTime: 2021-08-10 00:37:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\CreateOrder.vue
 -->
 <template>
   <div class="create__order">
-    <a-header :title="'生成订单'"></a-header>
+    <a-header :title="'生成订单'" backTo="/cart"></a-header>
     <div class="address__wrap">
       <div class="name" @click="goTo">
         <span>{{ address.receiverName }} </span>
@@ -59,7 +59,7 @@
       :style="{ height: '30%' }"
       @close="close"
     >
-      <div :style="{ width: '90%', margin: '0 auto', padding: '50px 0' }">
+      <div :style="{ width: '90%', margin: '0 auto', padding: '50px 0 0 0' }">
         <van-button
           v-show="!payPage"
           color="#1989fa"
@@ -67,9 +67,6 @@
           @click="handlePayOrder()"
           >支付宝支付</van-button
         >
-        <!-- <van-button color="#4fc08d" block @click="handlePayOrder(2)"
-          >微信支付</van-button
-        > -->
       </div>
       <div v-html="payPage"></div>
     </van-popup>
@@ -148,14 +145,8 @@ export default {
         }
       })
       nextTick(function () { document.forms[0].submit() })
-      // const div = document.createElement('div')
-      // div.innerHTML = payPage // html code
-      // document.querySelector('create__order').appendChild(div)
-      console.log(document.forms[0])
+      // console.log(document.forms[0])
       Toast.success('请完成支付')
-      // setTimeout(() => {
-      //   router.push({ path: '/order' })
-      // }, 2000)
     }
 
     return {
