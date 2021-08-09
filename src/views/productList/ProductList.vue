@@ -47,7 +47,7 @@
         >
           <template v-if="productList.length">
             <div class="product__item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
-              <img :src="'http://backend-api-01.newbee.ltd'+item.goodsCoverImg" />
+              <img :src="item.mainImage" />
               <div class="product__item__info">
                 <p class="product__item__name">{{item.name}}</p>
                 <p class="product__item__subtitle">{{item.subtitle}}</p>

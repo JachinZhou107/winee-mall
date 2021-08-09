@@ -12,7 +12,7 @@
       class="shop__img">
     <div :class="{'shop__content':true}"
     >
-      <div class="shop__content__title">{{item.name}}</div>
+      <div class="shop__content__title van-multi-ellipsis--l2">{{item.name}}</div>
       <div class="shop__content__tags">
         <span class="shop__content__price">¥{{item.price}}</span>
         <span class="shop__content__tag">月售{{item.sales||99}}+</span>

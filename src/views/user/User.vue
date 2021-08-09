@@ -28,7 +28,7 @@
     <div class="user__list">
       <van-cell-group>
         <van-cell title="订单管理" is-link to="home" />
-        <van-cell title="地址管理" is-link to="home" />
+        <van-cell title="地址管理" is-link @click="goTo('/address', { from: 'mine' })" />
         <van-collapse v-model="activeNames">
           <van-collapse-item title="账号管理" name="1">
             <van-cell title="修改资料" is-link to="setting" />
@@ -62,6 +62,7 @@ export default {
       phone: ''
     })
     const activeNames = ref([])
+
     const getUserData = async () => {
       const result = await post('/user/getUser')
       userData.username = result.data.username
@@ -70,15 +71,21 @@ export default {
       userData.phone = result.data.phone
     }
     getUserData()
+
     const router = useRouter()
     const handleLogout = async () => {
       const result = await get('/user/logout')
       if (result.status === 10000) { router.push({ name: 'Home' }) }
     }
+
+    const goTo = (r, query) => {
+      router.push({ path: r, query: query || {} })
+    }
     return {
       ...toRefs(userData),
       activeNames,
-      handleLogout
+      handleLogout,
+      goTo
     }
   }
 }

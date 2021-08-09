@@ -9,8 +9,8 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  // baseURL: 'https://www.fastmock.site/mock/a57e273033cfba677dffd0668818a17d/jd',
-  baseURL: 'https://zackyj.mynatapp.cc',
+  // baseURL: 'https://zackyj.mynatapp.cc',
+  baseURL: 'https://mall.uuuvw.xyz',
   timeout: 12000,
   withCredentials: true
 })

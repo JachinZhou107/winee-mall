@@ -9,9 +9,9 @@
 <template>
   <div class="wrapper">
     <StaticPart />
-    <NearBy name="新品上线" />
-    <NearBy name="热销商品" />
-    <NearBy name="最新推荐" />
+    <NearBy name="新品上线" api="/portal/newPdt"/>
+    <NearBy name="热销商品" api="/portal/hotPdt"/>
+    <NearBy name="最新推荐" api="/portal/nicePdt"/>
   </div>
   <Docker currentPage="0"/>
 </template>

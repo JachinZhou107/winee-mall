@@ -43,9 +43,34 @@ const routes = [
     component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Cart')
   },
   {
+    path: '/create-order',
+    name: 'CreateOrder',
+    component: () => import(/* webpackChunkName: "create-order" */ '../views/order/CreateOrder')
+  },
+  {
+    path: '/order-detail',
+    name: 'OrderDetail',
+    component: () => import(/* webpackChunkName: "order-detail" */ '../views/order/OrderDetail')
+  },
+  {
+    path: '/pay_return',
+    name: 'PayReturn',
+    component: () => import(/* webpackChunkName: "pay_return" */ '../views/order/PayReturn')
+  },
+  {
     path: '/user',
     name: 'User',
     component: () => import(/* webpackChunkName: "product-list" */ '../views/user/User')
+  },
+  {
+    path: '/address',
+    name: 'Address',
+    component: () => import(/* webpackChunkName: "address" */ '../views/address/Address')
+  },
+  {
+    path: '/edit-address',
+    name: 'EditAddress',
+    component: () => import(/* webpackChunkName: "edit-address" */ '../views/address/EditAddress')
   },
   {
     path: '/login',

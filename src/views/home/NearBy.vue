@@ -29,18 +29,16 @@ import { get } from '../../utils/request'
 import ProductInfo from '../../components/ProductInfo'
 import { Toast } from 'vant'
 
-const useNearbyList = () => {
+const useNearbyList = (api) => {
   const nearbyList = ref([])
   const getNearbyList = async () => {
     Toast.loading({
       message: '加载中',
       forbidClick: true
     })
-    const { data } = await get('/portal/hotPdt')
+    const { data } = await get(api)
+    if (api === '/portal/nicePdt') { nearbyList.value = data.list } else nearbyList.value = data
     // console.log(result)
-    if (data?.length) {
-      nearbyList.value = data
-    }
     Toast.clear()
   }
   // console.log(nearbyList)
@@ -49,12 +47,12 @@ const useNearbyList = () => {
 
 export default {
   name: 'NearBy',
-  props: ['name'],
+  props: ['name', 'api'],
   components: {
     ProductInfo
   },
-  setup () {
-    const { nearbyList, getNearbyList } = useNearbyList()
+  setup (props) {
+    const { nearbyList, getNearbyList } = useNearbyList(props.api)
     getNearbyList()
     return {
       nearbyList

@@ -1,13 +1,21 @@
 <template>
-  <van-nav-bar
-    title="购物车"
-  />
+  <van-nav-bar title="购物车" />
   <div class="cart__body">
-    <van-checkbox-group @change="groupChange" v-model="result" ref="checkboxGroup">
-      <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
+    <van-checkbox-group
+      @change="groupChange"
+      v-model="result"
+      ref="checkboxGroup"
+    >
+      <van-swipe-cell
+        :right-width="50"
+        v-for="(item, index) in list"
+        :key="index"
+      >
         <div class="good__item">
-          <van-checkbox :name="item.id" />
-          <div class="good__img"><img :src="item.productMainImage" alt=""></div>
+          <van-checkbox :name="item.productId" @click="checkOne(item)" />
+          <div class="good__img">
+            <img :src="item.productMainImage" alt="" />
+          </div>
           <div class="good__desc">
             <div class="good__title">
               <span>{{ item.productName }}</span>
@@ -40,9 +48,20 @@
     </van-checkbox-group>
   </div>
   <div class="empty" v-if="!list.length">
-    <img class="empty-cart" src="https://s.yezgea02.com/1604028375097/empty-car.png" alt="空购物车">
+    <img
+      class="empty-cart"
+      src="https://s.yezgea02.com/1604028375097/empty-car.png"
+      alt="空购物车"
+    />
     <div class="title">购物车空空如也</div>
-    <van-button round color="linear-gradient(to left, #39bdce, #0099ff)" type="primary" @click="goTo" block>前往选购</van-button>
+    <van-button
+      round
+      color="linear-gradient(to left, #39bdce, #0099ff)"
+      type="primary"
+      @click="goTo"
+      block
+      >前往选购</van-button
+    >
   </div>
   <van-submit-bar
     v-if="list.length > 0"
@@ -51,7 +70,9 @@
     button-text="结算"
     @submit="onSubmit"
   >
-    <van-checkbox @click="allCheck" v-model:checked="checkAll">全选</van-checkbox>
+    <van-checkbox @click="allCheck" v-model:checked="checkAll"
+      >全选</van-checkbox
+    >
   </van-submit-bar>
   <!-- <div class="cart">
     <div class="check">
@@ -69,7 +90,7 @@
       <div class="check__button">去结算</div>
     </div>
   </div> -->
-  <Docker />
+  <Docker currentPage="2" />
 </template>
 
 <script>
@@ -94,11 +115,11 @@ export default {
       list: [],
       all: false,
       result: [],
-      checkAll: true
+      checkAll: false
     })
 
     onMounted(() => {
-      console.log('onMounted')
+      // console.log('onMounted')
       init()
     })
 
@@ -109,17 +130,24 @@ export default {
     // }
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true })
-      const { data: { cartProductList } } = await get('/cart/list')
-      Toast.clear()
-      state.list = cartProductList
-      state.result = cartProductList.map(item => item.id)
+      const { data: data1 } = await get('/cart/list')
+      if (data1) {
+        state.list = data1.cartProductList
+      }
+      const { data: data2 } = await get('/order/getCartSelectPdt')
+      if (data2) {
+        state.result = data2.orderItemVoList.map((item) => item.productId)
+      }
       console.log(state.list, state.result)
+      Toast.clear()
     }
 
     const total = computed(() => {
       let sum = 0
-      const _list = state.list.filter(item => state.result.includes(item.id))
-      _list.forEach(item => {
+      const _list = state.list.filter((item) =>
+        state.result.includes(item.productId)
+      )
+      _list.forEach((item) => {
         sum += item.quantity * item.productPrice
       })
       return sum
@@ -133,6 +161,31 @@ export default {
       router.push({ path: '/home' })
     }
 
+    const checkOne = async ({ productId }) => {
+      console.log(productId, state.result)
+      if (state.result.includes(productId)) {
+        await post(
+          '/cart/check',
+          {},
+          {
+            params: {
+              productId
+            }
+          }
+        )
+      } else {
+        await post(
+          '/cart/unCheck',
+          {},
+          {
+            params: {
+              productId
+            }
+          }
+        )
+      }
+    }
+
     const onChange = async (value, detail) => {
       if (value > 5) {
         Toast.fail('超出单个商品的最大购买数量')
@@ -142,16 +195,23 @@ export default {
         Toast.fail('商品不得小于0')
         return
       }
-      if (state.list.filter(item => item.productId === detail.name)[0].quantity === value) return
+      if (
+        state.list.filter((item) => item.productId === detail.name)[0]
+          .quantity === value
+      ) { return }
       Toast.loading({ message: '修改中...', forbidClick: true })
       const params = {
         productId: detail.name,
         count: value
       }
-      await post('/cart/update', {}, {
-        params: params
-      })
-      state.list.forEach(item => {
+      await post(
+        '/cart/update',
+        {},
+        {
+          params: params
+        }
+      )
+      state.list.forEach((item) => {
         if (item.productId === detail.name) {
           item.quantity = value
         }
@@ -164,21 +224,25 @@ export default {
         Toast.fail('请选择商品进行结算')
         return
       }
-      const params = JSON.stringify(state.result)
-      router.push({ path: '/create-order', query: { ids: params } })
+      // const order = await get('/order/create')
+      router.push({ path: '/create-order' })
     }
 
     const deleteGood = async (id) => {
-      await post('/cart/delete', {}, {
-        params: {
-          productId: id
+      await post(
+        '/cart/delete',
+        {},
+        {
+          params: {
+            productId: id
+          }
         }
-      })
+      )
       // store.dispatch('updateCart')
       init()
     }
 
-    const groupChange = (result) => {
+    const groupChange = async (result) => {
       console.log(1)
       if (result.length === state.list.length) {
         console.log(2)
@@ -190,10 +254,12 @@ export default {
       state.result = result
     }
 
-    const allCheck = () => {
+    const allCheck = async () => {
       if (!state.checkAll) {
-        state.result = state.list.map(item => item.id)
+        await post('/cart/checkALL')
+        state.result = state.list.map((item) => item.productId)
       } else {
+        await post('/cart/unCheckALL')
         state.result = []
       }
     }
@@ -203,6 +269,7 @@ export default {
       total,
       goBack,
       goTo,
+      checkOne,
       onChange,
       onSubmit,
       deleteGood,
@@ -281,6 +348,6 @@ export default {
 }
 .van-submit-bar {
   position: absolute;
-  bottom: .51rem;
+  bottom: 0.51rem;
 }
 </style>

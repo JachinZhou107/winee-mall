@@ -16,9 +16,10 @@ import {
   List,
   PullRefresh,
   DropdownMenu, DropdownItem,
-  Toast,
+  Toast, Dialog,
   NavBar,
   Image as VanImage,
+  Card,
   Cell, CellGroup,
   Grid, GridItem,
   Swipe, SwipeItem, SwipeCell,
@@ -30,7 +31,10 @@ import {
   Stepper,
   Button,
   Radio,
-  SubmitBar
+  SubmitBar,
+  AddressList, AddressEdit,
+  Popup,
+  Pagination
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -52,6 +56,7 @@ createApp(App)
   .use(VanImage)
   .use(Cell)
   .use(CellGroup)
+  .use(Card)
   .use(Grid)
   .use(GridItem)
   .use(Swipe)
@@ -72,5 +77,10 @@ createApp(App)
   .use(Button)
   .use(Radio)
   .use(SubmitBar)
+  .use(AddressList)
+  .use(AddressEdit)
+  .use(Pagination)
+  .use(Popup)
+  .use(Dialog)
   .use(Toast)
   .mount('#app')
