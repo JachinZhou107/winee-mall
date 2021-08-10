@@ -1,16 +1,6 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
-
 <template>
   <div class="product__detail">
-    <a-header :title="'商品详情'"></a-header>
+    <a-header :title="'商品详情'" :backTo="'/'+(from || 'product-list')"></a-header>
     <div class="detail__content">
       <div class="product__img">
         <img :src="detail.mainImage" alt="">
@@ -25,7 +15,10 @@
           <span>库存{{ detail.stock}}</span>
         </div>
       </div>
-      <van-tabs v-model:active="show">
+      <van-tabs
+        v-model:active="show"
+        color="#1fa4fc"
+      >
         <van-tab title="商品信息" />
         <van-tab title="商品评价" />
       </van-tabs>
@@ -37,6 +30,9 @@
           <li>常见问题</li>
         </ul>
         <div class="product__content" v-html="detail.detail || ''"></div>
+      </div>
+      <div class="product__comment" v-else>
+        <ProductComment :commentList="comments" />
       </div>
     </div>
   </div>
@@ -57,12 +53,14 @@ import { useStore } from 'vuex'
 import { Toast } from 'vant'
 
 import aHeader from '../../components/aHeader.vue'
+import ProductComment from './ProductComment'
 import { get, post } from '../../utils/request'
 
 export default {
   name: 'ProductDetail',
   components: {
-    aHeader
+    aHeader,
+    ProductComment
   },
   setup () {
     const route = useRoute()
@@ -73,7 +71,9 @@ export default {
       detail: {
         goodsCarouselList: []
       },
-      show: 0
+      comments: [],
+      show: 0,
+      from: route.query.from
     })
     onMounted(async () => {
       Toast.loading({
@@ -82,18 +82,15 @@ export default {
       })
       const { id } = route.params
       // console.log(id)
-      const { data } = await get('product/detail', { productId: id })
+      const { data: detail } = await get('product/detail', { productId: id })
       // console.log(data)
-      state.detail = data
+      state.detail = detail
+      const { data: comments } = await get('/comment/list', { productId: id })
+      state.comments = comments
+      console.log(comments)
       store.dispatch('updateCart')
       Toast.clear()
     })
-
-    // nextTick(() => {
-    //   // 一些和DOM有关的东西
-    //   const content = document.querySelector('.detail__content')
-    //   content.scrollTop = 0
-    // })
 
     const goTo = () => {
       router.push({ path: '/cart' })
@@ -124,7 +121,7 @@ export default {
     }
 
     const count = computed(() => {
-      console.log(111, store.state.cartCount)
+      // console.log(111, store.state.cartCount)
       return store.state.cartCount
     })
 
@@ -223,6 +220,10 @@ export default {
       .product__content {
         padding: 0 .15rem;
       }
+    }
+    .product__comment {
+      background-color: #f2f2f2;
+      padding: .1rem 0;
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="search">
     <span class="search__title">云逸商城 ｜</span>
     <span class="search__input">
-      <router-link to="/product-list?from=home"><span>云蒸霞蔚，逸群绝伦</span></router-link>
+      <router-link to="/product-list?from=Home"><span>云蒸霞蔚，逸群绝伦</span></router-link>
     </span>
     <span class="loginInfo">
       <span v-if="loginStatus">

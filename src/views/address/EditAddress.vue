@@ -1,6 +1,6 @@
 <template>
+  <a-header :title="`${type == 'add' ? '新增地址' : '编辑地址'}`"></a-header>
   <div class="address-edit-box">
-    <a-header :title="`${type == 'add' ? '新增地址' : '编辑地址'}`"></a-header>
     <van-address-edit
       class="edit"
       :area-list="areaList"
@@ -113,6 +113,11 @@ export default {
   }
 }
 .address-edit-box {
+  position: absolute;
+  top: .48rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
   .van-address-edit {
     .van-button--danger {
       background: $primary-color;

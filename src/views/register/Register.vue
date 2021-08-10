@@ -70,14 +70,20 @@ export default {
 
     const handleRegister = async () => {
       try {
+        Toast.loading({
+          duration: 0,
+          forbidClick: true,
+          message: '注册中...'
+        })
         const result = await post('/user/register_phone', {}, {
           params: {
             phone: data.phone,
             code: data.password
           }
         })
+        Toast.clear()
         if (result.status === 10000) {
-          Toast.success('请设置密码')
+          Toast.success('注册成功\n设置用户名和密码')
           data.step = 2
           data.password = null
           data.username = null
@@ -88,6 +94,7 @@ export default {
           Toast.fail(result.msg)
         }
       } catch (e) {
+        Toast.clear()
         Toast.fail('请求失败')
       }
     }
@@ -98,11 +105,16 @@ export default {
         return
       }
       if (!data.username) {
-        Toast.fail('请设置登录名！')
+        Toast.fail('请设置用户名！')
         return
       }
       try {
         // console.log(1)
+        Toast.loading({
+          duration: 0,
+          forbidClick: true,
+          message: '提交中...'
+        })
         const result = await post('/user/register', {}, {
           params: {
             username: data.username,
@@ -110,15 +122,17 @@ export default {
             phone: data.phone
           }
         })
+        Toast.clear()
         if (result.status === 10000) {
           Toast.success(result.msg)
           setTimeout(() => {
-            router.push({ name: 'Setting', params: { from: 'register' } })
+            router.push({ name: 'Setting', query: { from: 'register' } })
           }, 1100)
         } else {
           Toast.fail(result.msg)
         }
       } catch (e) {
+        Toast.clear()
         Toast.fail('请求失败')
       }
     }
@@ -134,9 +148,15 @@ export default {
         return
       }
       data.password = null
-      Toast.success('验证码已发送')
+      Toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: '发送中...'
+      })
       const res = await get('/user/auth_code', { phone: data.phone })
+      Toast.clear()
       if (res.status === 10000) {
+        Toast.success('验证码已发送')
         data.buttonText = '重新发送'
         data.waiting = 60
         timer = setInterval(() => {

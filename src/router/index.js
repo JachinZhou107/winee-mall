@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-10 01:35:28
+ * @LastEditTime: 2021-08-10 20:31:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\router\index.js
@@ -63,6 +63,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "pay_return" */ '../views/order/PayReturn')
   },
   {
+    path: '/pay_quit',
+    name: 'PayQuit',
+    component: () => import(/* webpackChunkName: "pay_quit" */ '../views/order/PayReturn')
+  },
+  {
     path: '/user',
     name: 'User',
     component: () => import(/* webpackChunkName: "product-list" */ '../views/user/User')
@@ -81,6 +86,11 @@ const routes = [
     path: '/edit-address',
     name: 'EditAddress',
     component: () => import(/* webpackChunkName: "edit-address" */ '../views/address/EditAddress')
+  },
+  {
+    path: '/add-comment',
+    name: 'AddComment',
+    component: () => import(/* webpackChunkName: "add-comment" */ '../views/comment/AddComment')
   },
   {
     path: '/login',

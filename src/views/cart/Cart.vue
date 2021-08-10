@@ -278,7 +278,7 @@ export default {
   bottom: 1rem;
   left: 0;
   right: 0;
-  top: .5rem;
+  top: .6rem;
   .good__item {
     display: flex;
     .good__img {

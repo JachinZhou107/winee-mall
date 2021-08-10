@@ -5,7 +5,7 @@
       <input
       type="text"
       class="wrapper__input__content"
-      placeholder="请输入账号名称"
+      placeholder="请输入账号名称或手机号"
       v-model="username"
       >
     </div>
@@ -45,8 +45,15 @@ const useLogin = () => {
         username: data.username,
         password: data.password
       }
+      Toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: '登录中...'
+      })
       const result = await post('/user/login', {}, config)
+      Toast.clear()
       if (result?.status === 10000) {
+        Toast.success('登录成功')
         router.push({ name: 'Home' })
       } else {
         Toast.fail(result?.msg)

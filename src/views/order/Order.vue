@@ -1,15 +1,5 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
-
 <template>
-  <div class="order-box">
+  <div class="order-header">
     <a-header title="我的订单" backTo="/user"></a-header>
     <van-tabs
       @click="onChangeTab"
@@ -26,6 +16,8 @@
       <van-tab title="交易结束" name="60"></van-tab>
       <van-tab title="已取消" name="0"></van-tab>
     </van-tabs>
+  </div>
+  <div class="order-box">
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh" class="order-list-refresh">
         <van-list
@@ -85,7 +77,7 @@ export default {
       state.list = state.list.concat(list)
       state.totalPage = data.pages
       state.loading = false
-      if (state.page >= data.pageNum) state.finished = true
+      if (state.page >= data.pages) state.finished = true
     }
 
     const onChangeTab = (name) => {
@@ -102,6 +94,7 @@ export default {
     }
 
     const onLoad = () => {
+      console.log('load', state.page, state.totalPage)
       if (!state.refreshing && state.page < state.totalPage) {
         console.log(state.page)
         console.log(state.totalPage)
@@ -135,25 +128,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.order-box {
-  margin-top: .5rem;
-  .order-header {
-    position: fixed;
-    top: 0;
+.order-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: .5rem;
+  line-height: .5rem;
+  padding: 0 .1rem;
+  box-sizing: border-box;
+  color: #252525;
+  background: #fff;
+  border-bottom: 1px solid #dcdcdc;
+  .van-tabs {
+    position: absolute;
+    top: .48rem;
     left: 0;
-    z-index: 10000;
-    width: 100%;
-    height: .44rem;
-    line-height: 44px;
-    padding: 0 10px;
-    box-sizing: border-box;
-    color: #252525;
-    background: #fff;
-    border-bottom: 1px solid #dcdcdc;
-    .order-name {
-      font-size: 14px;
-    }
+    right: 0;
   }
+}
+.order-box {
+  position: absolute;
+  top: .5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background-color: #f8f8f8;
   .order-tab {
     position: fixed;
     left: 0;
@@ -165,7 +167,6 @@ export default {
     margin-top: 60px;
   }
   .content {
-    height: calc(100vh - 70px);
     overflow: hidden;
     overflow-y: scroll;
     padding-top: .3rem;
@@ -183,9 +184,10 @@ export default {
       margin: 20px 10px;
       background-color: #fff;
       .order-item-header {
-        padding: 10px 20px 0 20px;
+        padding: .1rem .2rem 0 .2rem;
         display: flex;
         justify-content: space-between;
+        font-size: .14rem;
         .order-item-status {
           color: #1fa4fc;
         }

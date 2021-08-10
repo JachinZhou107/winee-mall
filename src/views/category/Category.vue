@@ -31,7 +31,7 @@ export default {
   setup () {
     const router = useRouter()
     const handleGoBack = () => {
-      router.back()
+      router.push('/home')
     }
     return { handleGoBack }
   }

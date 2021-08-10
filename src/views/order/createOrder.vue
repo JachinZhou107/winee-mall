@@ -1,25 +1,25 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:54:50
- * @LastEditTime: 2021-08-10 10:31:37
+ * @LastEditTime: 2021-08-10 21:15:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\CreateOrder.vue
 -->
 <template>
-  <div class="create__order">
-    <a-header :title="'生成订单'" backTo="/cart"></a-header>
-    <div class="address__wrap">
-      <div class="name" @click="goTo">
-        <span>{{ address.receiverName }} </span>
-        <span>{{ address.receiverMobile }}</span>
-      </div>
-      <div class="address">
-        {{ address.receiverProvince }} {{ address.receiverCity }}
-        {{ address.receiverDistrict }} {{ address.receiverAddress }}
-      </div>
-      <van-icon class="arrow" name="arrow" />
+  <a-header :title="'生成订单'" backTo="/cart" />
+  <div class="address__wrap">
+    <div class="name" @click="goTo">
+      <span>{{ address.receiverName }} </span>
+      <span>{{ address.receiverMobile }}</span>
     </div>
+    <div class="address">
+      {{ address.receiverProvince }} {{ address.receiverCity }}
+      {{ address.receiverDistrict }} {{ address.receiverAddress }}
+    </div>
+    <van-icon class="arrow" name="arrow" />
+  </div>
+  <div class="create__order">
     <div class="good">
       <div class="good__item" v-for="(item, index) in cartList" :key="index">
         <div class="good__img">
@@ -122,7 +122,7 @@ export default {
     }
 
     const goTo = () => {
-      router.push({ path: '/address', query: { from: 'create__order' } })
+      router.push({ path: '/address', query: { from: 'create-order' } })
     }
 
     const handleCreateOrder = async () => {
@@ -162,67 +162,73 @@ export default {
 
 <style lang="scss" scoped>
 
+.address__wrap {
+  position: absolute;
+  top: .48rem;
+  right: 0;
+  left: 0;
+  background: #fff;
+  font-size: .14rem;
+  padding: .15rem;
+  z-index: 9;
+  color: #222333;
+  .name {
+    span {
+      padding: 0 .05rem;
+    }
+  }
+  .address {
+    margin: 10px 0;
+  }
+  .arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+  }
+  &::before {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: -webkit-repeating-linear-gradient(
+      135deg,
+      #ff6c6c 0,
+      #ff6c6c 20%,
+      transparent 0,
+      transparent 25%,
+      #1989fa 0,
+      #1989fa 45%,
+      transparent 0,
+      transparent 50%
+    );
+    background: repeating-linear-gradient(
+      -45deg,
+      #ff6c6c 0,
+      #ff6c6c 20%,
+      transparent 0,
+      transparent 25%,
+      #1989fa 0,
+      #1989fa 45%,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 80px;
+    content: "";
+  }
+}
 .create__order {
   background: #f9f9f9;
-  .address__wrap {
-    margin-bottom: 20px;
-    background: #fff;
-    position: relative;
-    font-size: 14px;
-    padding: 15px;
-    color: #222333;
-    .name {
-      span {
-        padding: 0 .05rem;
-      }
-    }
-    .address {
-      margin: 10px 0;
-    }
-    .arrow {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 20px;
-    }
-    &::before {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 2px;
-      background: -webkit-repeating-linear-gradient(
-        135deg,
-        #ff6c6c 0,
-        #ff6c6c 20%,
-        transparent 0,
-        transparent 25%,
-        #1989fa 0,
-        #1989fa 45%,
-        transparent 0,
-        transparent 50%
-      );
-      background: repeating-linear-gradient(
-        -45deg,
-        #ff6c6c 0,
-        #ff6c6c 20%,
-        transparent 0,
-        transparent 25%,
-        #1989fa 0,
-        #1989fa 45%,
-        transparent 0,
-        transparent 50%
-      );
-      background-size: 80px;
-      content: "";
-    }
-  }
-  .good {
-    margin-bottom: 120px;
-  }
+  position: absolute;
+  top: 1.4rem;
+  left: 0;
+  right: 0;
+  bottom: 1rem;
+  overflow: auto;
   .good__item {
-    padding: 10px;
+    padding: .1rem;
     background: #fff;
     display: flex;
     .good__img {

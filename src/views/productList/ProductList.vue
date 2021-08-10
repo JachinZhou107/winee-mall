@@ -1,42 +1,37 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 18:38:19
- * @LastEditTime: 2021-08-09 21:42:26
+ * @LastEditTime: 2021-08-10 20:53:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productList\ProductList.vue
 -->
 <template>
-  <div class="wrapper">
-    <div class="header">
-      <div class="search">
-        <div
-          class="search__backarrow"
-          @click="handleGoBack"
-        ><b></b><i></i></div>
-        <div class="search__content">
-          <span class="iconfont">&#xe644;</span>
-          <span class="search__content__input" >
-            <input
-              type="text"
-              name="search"
-              placeholder="请输入关键词"
-              v-model="keywords"
-            >
-          </span>
-        </div>
-        <button class="search__submit" @click="getSearch">搜索</button>
+  <div class="header">
+    <div class="search">
+      <div
+        class="search__backarrow"
+        @click="handleGoBack"
+      ><b></b><i></i></div>
+      <div class="search__content">
+        <span class="iconfont">&#xe644;</span>
+        <span class="search__content__input" >
+          <input
+            type="text"
+            name="search"
+            placeholder="请输入关键词"
+            v-model="keywords"
+          >
+        </span>
       </div>
-      <!-- <van-tabs color="#1fa4fc" type="card" @click="changeTab">
-        <van-tab title="推荐" name="" ></van-tab>
-        <van-tab title="新品" name="new" ></van-tab>
-        <van-tab title="价格" name="price" ></van-tab>
-      </van-tabs> -->
-      <van-dropdown-menu active-color="#1fa4fc" >
-        <van-dropdown-item v-model="select" :options="option1" />
-        <van-dropdown-item v-model="sort" :options="option2" @change="onRefresh" />
-      </van-dropdown-menu>
+      <button class="search__submit" @click="getSearch">搜索</button>
     </div>
+    <van-dropdown-menu active-color="#1fa4fc" >
+      <van-dropdown-item v-model="select" :options="option1" />
+      <van-dropdown-item v-model="sort" :options="option2" @change="onRefresh" />
+    </van-dropdown-menu>
+  </div>
+  <div class="wrapper">
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh" >
         <van-list
@@ -127,7 +122,7 @@ export default {
     }
 
     const handleGoBack = () => {
-      router.back()
+      router.push({ name: route.query.from || 'Category' })
     }
 
     const productDetail = (item) => {
@@ -182,16 +177,14 @@ export default {
 @import '../../style/viriables.scss';
 @import '../../style/mixins.scss';
 
-.wrapper {
-  padding: 0 .18rem;
-  .header {
-    position: absolute;
-    top: 0;
-    z-index: 999;
-    margin: 0 -0.18rem;
-    width: 100%;
-    background-color: #fff;
-  }
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  background-color: #fff;
   .search {
     margin: .16rem .64rem 0 .42rem;
     line-height: .31rem;
@@ -265,6 +258,14 @@ export default {
       color: #f5f5f5;
     }
   }
+}
+.wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
   .van-tabs {
     margin: -0.14rem 0 .1rem 0;
   }

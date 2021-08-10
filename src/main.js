@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-09 23:23:34
+ * @LastEditTime: 2021-08-10 14:23:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\main.js
@@ -36,7 +36,9 @@ import {
   Popup,
   Pagination,
   Field,
-  Uploader
+  Uploader,
+  Rate,
+  Step, Steps
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -85,6 +87,9 @@ createApp(App)
   .use(Popup)
   .use(Field)
   .use(Uploader)
+  .use(Rate)
+  .use(Steps)
+  .use(Step)
   .use(Dialog)
   .use(Toast)
   .mount('#app')

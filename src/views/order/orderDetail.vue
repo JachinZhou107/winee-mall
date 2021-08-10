@@ -1,41 +1,47 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:55:01
- * @LastEditTime: 2021-08-10 10:27:05
+ * @LastEditTime: 2021-08-10 21:47:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\orderDetail.vue
 -->
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
 
 <template>
   <div class="order-detail-box">
-    <a-header :title="'订单详情'"></a-header>
+    <a-header :title="'订单详情'" backTo='/order' />
     <div class="order-status">
+      <van-steps :active="active" active-color="#38f">
+        <van-step value='10'>未付款</van-step>
+        <template v-if="detail.status > 0">
+          <van-step>已付款</van-step>
+          <van-step>已发货</van-step>
+          <van-step>交易完成</van-step>
+          <van-step>交易结束</van-step>
+        </template>
+        <template v-else-if="detail.status===0">
+          <van-step>已关闭</van-step>
+        </template>
+      </van-steps>
+    </div>
+    <div class="order-info">
       <div class="status-item">
-        <label>收货地址：</label>
+        <label>收货人：</label>
         <span>
           <div class="name">
             <span>{{ shipping.receiverName }} </span>
             <span>{{ shipping.receiverMobile }}</span>
           </div>
-          <div class="address">
-            {{ shipping.receiverProvince }} {{ shipping.receiverCity }}
-            {{ shipping.receiverDistrict }} {{ shipping.receiverAddress }}
-          </div>
         </span>
       </div>
       <div class="status-item">
-        <label>订单状态：</label>
-        <span>{{ detail.statusDesc }}</span>
+        <label>收货地址：</label>
+        <span>
+          <div class="address">
+            {{ shipping.receiverProvince }} {{ shipping.receiverCity }}
+            {{ shipping.receiverDistrict }} <br> {{ shipping.receiverAddress }}
+          </div>
+        </span>
       </div>
       <div class="status-item">
         <label>订单编号：</label>
@@ -69,11 +75,15 @@
       desc="全场包邮"
       :title="item.productName"
       :thumb="item.productImage"
-    />
+    >
+      <template v-if="detail.status===50" #footer>
+        <van-button type="primary" size="mini"  @click="addComment(item.productId)">去评价</van-button>
+      </template>
+    </van-card>
     <van-popup
       v-model:show="showPay"
       position="bottom"
-      :style="{ height: '24%' }"
+      :style="{ height: '15%' }"
     >
       <div :style="{ width: '90%', margin: '0 auto', padding: '20px 0' }">
         <van-button color="#1989fa" block @click="handlePayOrder(detail.orderNo)">支付宝支付</van-button>
@@ -86,7 +96,7 @@
 <script>
 import { reactive, toRefs, onMounted, nextTick } from 'vue'
 import { Dialog, Toast } from 'vant'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import aHeader from '../../components/aHeader'
 import { get, post } from '../../utils/request'
@@ -98,15 +108,17 @@ export default {
   },
   setup () {
     const route = useRoute()
+    const router = useRouter()
     const state = reactive({
       detail: {},
       shipping: {},
       showPay: false,
-      payPage: ''
+      payPage: '',
+      active: 10
     })
 
     onMounted(() => {
-      console.log('munted')
+      // console.log('munted')
       init()
     })
 
@@ -117,13 +129,27 @@ export default {
       })
       const { data } = await get('/order/detail', { orderNo: route.query.orderNo })
       state.detail = data
+      if (state.detail.status === 0) {
+        state.active = 1
+      } else if (state.detail.status === 10) {
+        state.active = 0
+      } else if (state.detail.status === 20) {
+        state.active = 1
+      } else if (state.detail.status === 40) {
+        state.active = 2
+      } else if (state.detail.status === 50) {
+        state.active = 3
+      } else if (state.detail.status === 60) {
+        state.active = 4
+      }
       state.shipping = data.shippingVo
       Toast.clear()
     }
 
     const handleCancelOrder = (id) => {
       Dialog.confirm({
-        title: '确认取消订单？'
+        title: '确认取消订单？',
+        confirmButtonColor: '#1fa4fc'
       }).then(() => {
         post('/order/cancel', {}, { params: { orderId: id } }).then(res => {
           console.log(res)
@@ -167,6 +193,10 @@ export default {
       state.showPay = false
     }
 
+    const addComment = (id) => {
+      router.push({ name: 'AddComment', query: { id } })
+    }
+
     const close = () => {
       Dialog.close()
     }
@@ -177,6 +207,7 @@ export default {
       handleConfirmReceive,
       showPayFn,
       handlePayOrder,
+      addComment,
       close
     }
   }
@@ -188,6 +219,9 @@ export default {
     background: #f7f7f7;
     margin-top: .5rem;
     .order-status {
+      padding: .1rem 0;
+    }
+    .order-info {
       background: #fff;
       padding: 20px;
       font-size: 15px;

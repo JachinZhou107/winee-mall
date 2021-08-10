@@ -1,5 +1,5 @@
 <template>
-  <a-header :title="'地址管理'" />
+  <a-header :title="'地址管理'" :backTo="'/'+from" />
   <div class="address__box">
     <div class="addres__item">
       <van-address-list
@@ -88,7 +88,7 @@ export default {
     }
 
     const select = (item) => {
-      router.push({ path: '/create-order', query: { addressId: item.id, from: state.from } })
+      router.push({ path: '/create-order', query: { addressId: item.id } })
     }
 
     // const paging = () => {

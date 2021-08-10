@@ -56,12 +56,18 @@ export default {
     })
     const handleLogin = async () => {
       try {
+        Toast.loading({
+          duration: 0,
+          forbidClick: true,
+          message: '登录中...'
+        })
         const result = await post('/user/login_phone', {}, {
           params: {
             phone: data.username,
             code: data.password
           }
         })
+        Toast.clear()
         if (result.status === 10000) {
           Toast.success('登录成功')
           setTimeout(() => {
@@ -72,6 +78,7 @@ export default {
           Toast.fail(result.msg)
         }
       } catch (e) {
+        Toast.clear()
         Toast.fail('请求失败')
       }
     }
@@ -88,7 +95,12 @@ export default {
         return
       }
       data.password = null
+      Toast.loading({
+        duration: 0,
+        forbidClick: true
+      })
       const res = await get('/user/auth_code', { phone: data.username })
+      Toast.clear()
       if (res.status === 10000) {
         Toast.success('验证码已发送')
         data.buttonText = '重新发送'

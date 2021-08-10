@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:38:30
- * @LastEditTime: 2021-08-10 00:08:13
+ * @LastEditTime: 2021-08-10 21:14:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\user\user.vue
@@ -28,7 +28,7 @@
     <div class="user__list">
       <van-cell-group>
         <van-cell title="订单管理" is-link to="order" />
-        <van-cell title="地址管理" is-link @click="goTo('/address', { from: 'mine' })" />
+        <van-cell title="地址管理" is-link @click="goTo('/address', { from: 'user' })" />
         <van-collapse v-model="activeNames">
           <van-collapse-item title="账号管理" name="1">
             <van-cell title="修改资料" is-link to="setting" />
@@ -47,6 +47,7 @@ import { useRouter } from 'vue-router'
 import { post, get } from '../../utils/request'
 import aHeader from '../../components/aHeader'
 import Docker from '../../components/Docker'
+import { Dialog } from 'vant'
 
 export default {
   name: 'User',
@@ -75,9 +76,15 @@ export default {
     getUserData()
 
     const router = useRouter()
-    const handleLogout = async () => {
-      const result = await get('/user/logout')
-      if (result.status === 10000) { router.push({ name: 'Home' }) }
+    const handleLogout = () => {
+      Dialog.confirm({
+        title: '确认退出登录？',
+        confirmButtonColor: '#1fa4fc'
+      }).then(() => {
+        get('/user/logout').then(result => {
+          if (result.status === 10000) { router.push({ name: 'Home' }) }
+        })
+      })
     }
 
     const goTo = (r, query) => {

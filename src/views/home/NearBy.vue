@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-09 20:29:24
+ * @LastEditTime: 2021-08-10 21:40:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -13,7 +13,7 @@
       <router-link
         v-for="item in nearbyList"
         :key="item.id"
-        :to="`/product-detail/${item.id}`"
+        :to="`/product-detail/${item.id}?from=home`"
       >
         <ProductInfo
           :item="item"
