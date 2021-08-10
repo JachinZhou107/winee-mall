@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-06 09:35:50
+ * @LastEditTime: 2021-08-10 22:12:10
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \my-mall\src\components\Toast.vue
+-->
 <template>
   <div class="toast">
     {{message}}
@@ -17,7 +25,6 @@ export const useToast = () => {
   const showToast = (message) => {
     toastData.show = true
     toastData.toastMessage = message
-    // console.log('登录失败')
     setTimeout(() => {
       toastData.show = false
       toastData.toastMessage = ''

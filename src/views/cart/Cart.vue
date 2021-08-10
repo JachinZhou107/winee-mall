@@ -103,15 +103,9 @@ export default {
     })
 
     onMounted(() => {
-      // console.log('onMounted')
       init()
     })
 
-    // const getCart = async () => {
-    //   const { data } = await get('/product/list')
-    //   console.log(data)
-    //   return data
-    // }
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true })
       const { data: data1 } = await get('/cart/list')
@@ -122,7 +116,6 @@ export default {
       if (data2) {
         state.result = data2.orderItemVoList.map((item) => item.productId)
       }
-      console.log(state.list, state.result)
       Toast.clear()
     }
 
@@ -146,7 +139,6 @@ export default {
     }
 
     const checkOne = async ({ productId }) => {
-      console.log(productId, state.result)
       if (state.result.includes(productId)) {
         await post(
           '/cart/check',
@@ -227,12 +219,9 @@ export default {
     }
 
     const groupChange = async (result) => {
-      console.log(1)
       if (result.length === state.list.length) {
-        console.log(2)
         state.checkAll = true
       } else {
-        console.log(3)
         state.checkAll = false
       }
       state.result = result

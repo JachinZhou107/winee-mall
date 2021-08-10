@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 14:13:30
- * @LastEditTime: 2021-08-09 23:37:31
+ * @LastEditTime: 2021-08-10 22:11:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\ProductsInfo.vue
@@ -33,7 +33,6 @@ import { useRouter } from 'vue-router'
 const useCategory = () => {
   const router = useRouter()
   const handleSelectCategory = (categoryId) => {
-    // console.log(categoryId)
     router.push({ path: '/product-list', query: { categoryId: categoryId } })
   }
   return { handleSelectCategory }

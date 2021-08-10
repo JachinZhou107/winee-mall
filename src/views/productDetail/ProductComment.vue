@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-10 15:59:41
- * @LastEditTime: 2021-08-10 19:22:41
+ * @LastEditTime: 2021-08-10 22:11:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productDetail\ProductComment.vue
@@ -69,7 +69,6 @@ export default {
     const state = reactive({
       list: props.commentList
     })
-    console.log(state.list)
     return {
       ...toRefs(state)
     }

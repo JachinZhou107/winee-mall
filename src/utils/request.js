@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-10 18:01:37
+ * @LastEditTime: 2021-08-10 22:11:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\utils\request.js
@@ -17,7 +17,6 @@ const instance = axios.create({
 
 export const post = (url, data, config) => {
   return new Promise((resolve, reject) => {
-    console.log(config)
     instance.post(url, data, {
       ...config,
       headers: {

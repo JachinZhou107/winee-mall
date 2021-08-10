@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-06 09:35:50
+ * @LastEditTime: 2021-08-10 22:11:48
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \my-mall\src\App.vue
+-->
 <template>
 <div :class="isPc?'router-view':''">
   <router-view />
@@ -17,7 +25,6 @@ export default {
       return flag
     }
     if (_isMobile()) {
-      console.log('手机端')
       state.isPc = 0
     }
     return {
@@ -30,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 .router-view{
   width: 100%;
-  max-width: 400px;
+  // max-width: 400px;
   height: auto;
   position: absolute;
   top: 0;

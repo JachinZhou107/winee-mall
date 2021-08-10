@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:38:52
- * @LastEditTime: 2021-08-10 21:35:22
+ * @LastEditTime: 2021-08-10 22:10:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\user\setting.vue
@@ -99,7 +99,6 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       state.face[0] = { url: data }
-      console.log(state.face[0])
     }
 
     return {

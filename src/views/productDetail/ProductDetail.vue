@@ -81,13 +81,10 @@ export default {
         forbidClick: true
       })
       const { id } = route.params
-      // console.log(id)
       const { data: detail } = await get('product/detail', { productId: id })
-      // console.log(data)
       state.detail = detail
       const { data: comments } = await get('/comment/list', { productId: id })
       state.comments = comments
-      console.log(comments)
       store.dispatch('updateCart')
       Toast.clear()
     })
@@ -121,7 +118,6 @@ export default {
     }
 
     const count = computed(() => {
-      // console.log(111, store.state.cartCount)
       return store.state.cartCount
     })
 

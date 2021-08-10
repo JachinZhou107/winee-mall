@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-10 20:31:02
+ * @LastEditTime: 2021-08-10 22:11:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\router\index.js
@@ -99,8 +99,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       getLoginStatus()
         .then((res) => {
-          const isLogin = res
-          console.log(isLogin);
+          const isLogin = res;
           (isLogin ? next({ name: 'Home' }) : next())
         })
     }
@@ -112,8 +111,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       getLoginStatus()
         .then((res) => {
-          const isLogin = res
-          console.log(isLogin);
+          const isLogin = res;
           (isLogin ? next({ name: 'Home' }) : next())
         })
     }

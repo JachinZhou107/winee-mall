@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-10 21:40:46
+ * @LastEditTime: 2021-08-10 22:11:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -38,10 +38,8 @@ const useNearbyList = (api) => {
     })
     const { data } = await get(api)
     nearbyList.value = data
-    // console.log(result)
     Toast.clear()
   }
-  // console.log(nearbyList)
   return { nearbyList, getNearbyList }
 }
 

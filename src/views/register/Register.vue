@@ -109,7 +109,6 @@ export default {
         return
       }
       try {
-        // console.log(1)
         Toast.loading({
           duration: 0,
           forbidClick: true,

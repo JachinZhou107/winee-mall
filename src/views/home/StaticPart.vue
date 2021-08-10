@@ -93,7 +93,6 @@ export default {
       images.value = res.data.list.map((value) => {
         return value.mainImage
       })
-      console.log(images.value)
     })
 
     return {

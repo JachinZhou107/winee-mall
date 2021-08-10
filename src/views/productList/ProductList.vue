@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 18:38:19
- * @LastEditTime: 2021-08-10 22:00:12
+ * @LastEditTime: 2021-08-10 22:11:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productList\ProductList.vue
@@ -140,7 +140,6 @@ export default {
     }
 
     const onRefresh = () => {
-      console.log('refresh')
       state.refreshing = true
       state.finished = false
       state.loading = true
@@ -153,7 +152,6 @@ export default {
     }
 
     const changeTab = (name) => {
-      console.log('name', name)
       state.sortBy = name
       onRefresh()
     }

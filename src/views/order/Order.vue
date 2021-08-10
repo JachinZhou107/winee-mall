@@ -94,10 +94,7 @@ export default {
     }
 
     const onLoad = () => {
-      console.log('load', state.page, state.totalPage)
       if (!state.refreshing && state.page < state.totalPage) {
-        console.log(state.page)
-        console.log(state.totalPage)
         state.page = state.page + 1
       }
       if (state.refreshing) {

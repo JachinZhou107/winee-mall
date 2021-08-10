@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:55:01
- * @LastEditTime: 2021-08-10 21:47:30
+ * @LastEditTime: 2021-08-10 22:13:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\orderDetail.vue
@@ -118,7 +118,6 @@ export default {
     })
 
     onMounted(() => {
-      // console.log('munted')
       init()
     })
 
@@ -152,7 +151,6 @@ export default {
         confirmButtonColor: '#1fa4fc'
       }).then(() => {
         post('/order/cancel', {}, { params: { orderId: id } }).then(res => {
-          console.log(res)
           if (res.status === 10000) {
             Toast.success('删除成功')
             init()
@@ -167,10 +165,10 @@ export default {
 
     const handleConfirmReceive = (id) => {
       Dialog.confirm({
-        title: '确认收货？'
+        title: '确认收货？',
+        confirmButtonColor: '#1fa4fc'
       }).then(() => {
         post('/order/receive', {}, { params: { orderNo: id } }).then(res => {
-          // console.log(res)
           if (res.status === 10000) {
             Toast.success('收货成功')
             init()

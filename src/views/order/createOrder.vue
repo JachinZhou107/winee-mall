@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:54:50
- * @LastEditTime: 2021-08-10 21:15:55
+ * @LastEditTime: 2021-08-10 22:11:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\CreateOrder.vue
@@ -145,7 +145,6 @@ export default {
         }
       })
       nextTick(function () { document.forms[0].submit() })
-      // console.log(document.forms[0])
       Toast.success('请完成支付')
     }
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:40:00
- * @LastEditTime: 2021-08-10 21:46:43
+ * @LastEditTime: 2021-08-10 22:12:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\aHeader.vue
@@ -25,7 +25,6 @@ export default {
   props: ['title', 'backTo'],
   setup (props) {
     const router = useRouter()
-    console.log(props.backTo)
     const onClickLeft = () => {
       if (!props.backTo) {
         router.back()

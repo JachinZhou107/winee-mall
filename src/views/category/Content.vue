@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-09 23:38:40
+ * @LastEditTime: 2021-08-10 22:11:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\category\Content.vue
@@ -44,7 +44,6 @@ const useCategories = () => {
       forbidClick: true
     })
     const result = await get('/category/list')
-    // console.log(result.data)
     data.contentList = result.data
     data.curTab = 0
     Toast.clear()
