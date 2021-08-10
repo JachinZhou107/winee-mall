@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-10 01:21:16
- * @LastEditTime: 2021-08-10 01:29:12
+ * @LastEditTime: 2021-08-10 11:03:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\login\codeLogin.vue
@@ -30,6 +30,7 @@
     </div>
     <div class="wrapper__register-button" @click="handleLogin">登录</div>
     <div class="wrapper__tools">
+      <span class="wrapper__tools__login" @click="handleGoLogin">账号密码登录</span> |
       <span class="wrapper__tools__register" @click="handleGoRegister">立即注册</span> |
       <span class="wrapper__tools__password">忘记密码</span>
     </div>
@@ -64,7 +65,7 @@ export default {
         if (result.status === 10000) {
           Toast.success('登录成功')
           setTimeout(() => {
-            if (!result.username) router.push({ name: 'Setting', query: { from: 'login' } })
+            if (!result.data.username) router.push({ name: 'Setting', query: { from: 'login' } })
             else router.push({ name: 'Home' })
           }, 2100)
         } else {
@@ -77,12 +78,16 @@ export default {
     const handleGoRegister = () => {
       router.push({ name: 'Register' })
     }
+    const handleGoLogin = () => {
+      router.push({ name: 'Login' })
+    }
     let timer = null
     const handleSend = async () => {
       if (!data.username) {
         Toast.fail('请输入手机号')
         return
       }
+      data.password = null
       const res = await get('/user/auth_code', { phone: data.username })
       if (res.status === 10000) {
         Toast.success('验证码已发送')
@@ -101,6 +106,7 @@ export default {
     }
     return {
       handleGoRegister,
+      handleGoLogin,
       handleLogin,
       handleSend,
       ...toRefs(data)
@@ -175,8 +181,11 @@ export default {
     text-align: center;
     margin-top: 0.16rem;
     font-size: .14rem;
-    &__register {
+    &__login {
       padding-right: .12rem;
+    }
+    &__register {
+      padding:  0 .12rem;
     }
     &__password {
       padding-left: .12rem;

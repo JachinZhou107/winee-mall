@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:55:01
- * @LastEditTime: 2021-08-10 00:39:25
+ * @LastEditTime: 2021-08-10 10:27:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\orderDetail.vue
@@ -48,6 +48,7 @@
       <!-- <van-button v-if="[1,2,3].includes(detail.orderStatus)" style="margin-bottom: 10px" color="#1baeae" block @click="confirmOrder(detail.orderNo)">确认订单</van-button> -->
       <van-button v-if="detail.status === 10" style="margin-bottom: 10px" color="#1fa4fc" block @click="showPayFn">去支付</van-button>
       <van-button v-if="(detail.status>0 && detail.status <= 20)" block @click="handleCancelOrder(detail.orderNo)">取消订单</van-button>
+      <van-button v-if="(detail.status === 40 )" color="#1fa4fc" block @click="handleConfirmReceive(detail.orderNo)">确认收货</van-button>
     </div>
     <div class="order-price">
       <div class="price-item">
@@ -75,8 +76,7 @@
       :style="{ height: '24%' }"
     >
       <div :style="{ width: '90%', margin: '0 auto', padding: '20px 0' }">
-        <van-button :style="{ marginBottom: '10px' }" color="#1989fa" block @click="handlePayOrder(detail.orderNo, 1)">支付宝支付</van-button>
-        <van-button color="#4fc08d" block @click="handlePayOrder(detail.orderNo, 2)">微信支付</van-button>
+        <van-button color="#1989fa" block @click="handlePayOrder(detail.orderNo)">支付宝支付</van-button>
       </div>
       <div v-html="payPage"></div>
     </van-popup>
@@ -139,6 +139,24 @@ export default {
       })
     }
 
+    const handleConfirmReceive = (id) => {
+      Dialog.confirm({
+        title: '确认收货？'
+      }).then(() => {
+        post('/order/receive', {}, { params: { orderNo: id } }).then(res => {
+          // console.log(res)
+          if (res.status === 10000) {
+            Toast.success('收货成功')
+            init()
+          } else {
+            Toast.fail(res.msg)
+          }
+        })
+      }).catch((res) => {
+        // on cancel
+      })
+    }
+
     const showPayFn = () => {
       state.showPay = true
     }
@@ -156,6 +174,7 @@ export default {
     return {
       ...toRefs(state),
       handleCancelOrder,
+      handleConfirmReceive,
       showPayFn,
       handlePayOrder,
       close

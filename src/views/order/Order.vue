@@ -38,7 +38,7 @@
           <div v-for="(item, index) in list" :key="index" class="order-item-box" @click="goTo(item.orderNo)">
             <div class="order-item-header">
               <span>订单时间：{{ item.createTime }}</span>
-              <span>{{ item.statusDesc }}</span>
+              <span class="order-item-status">{{ item.statusDesc }}</span>
             </div>
             <van-card
               v-for="one in item.orderItemVoList"
@@ -186,6 +186,9 @@ export default {
         padding: 10px 20px 0 20px;
         display: flex;
         justify-content: space-between;
+        .order-item-status {
+          color: #1fa4fc;
+        }
       }
       .van-card {
         background-color: #fff;

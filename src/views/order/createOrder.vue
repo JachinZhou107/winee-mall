@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:54:50
- * @LastEditTime: 2021-08-10 00:37:47
+ * @LastEditTime: 2021-08-10 10:31:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\CreateOrder.vue
@@ -56,7 +56,7 @@
       :close-on-click-overlay="false"
       v-model:show="showPay"
       position="bottom"
-      :style="{ height: '30%' }"
+      :style="{ height: '20%' }"
       @close="close"
     >
       <div :style="{ width: '90%', margin: '0 auto', padding: '50px 0 0 0' }">

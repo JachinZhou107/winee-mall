@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:38:52
- * @LastEditTime: 2021-08-10 00:48:43
+ * @LastEditTime: 2021-08-10 10:55:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\user\setting.vue
@@ -24,7 +24,7 @@
     </div>
     <div class="info__box">
       <van-cell-group inset class="info-item">
-        <van-field v-model="username" label="登录名称" readonly />
+        <van-field v-model="username" label="登录名称" />
         <van-field v-model="phone" type="tel" label="手机号码" readonly />
         <van-field v-model="email" label="邮箱" />
         <van-field v-model="question" label="密保问题" />
@@ -72,7 +72,7 @@ export default {
       newPwd: ''
     })
     onMounted(async () => {
-      if (route.query.from !== 'login') {
+      if (route.query.from !== 'register') {
         const { data } = await post('/user/getUser')
         state.username = data.username
         state.face[0] = { url: data.face }

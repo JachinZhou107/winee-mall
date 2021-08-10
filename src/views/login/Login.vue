@@ -5,7 +5,7 @@
       <input
       type="text"
       class="wrapper__input__content"
-      placeholder="请输入手机号"
+      placeholder="请输入账号名称"
       v-model="username"
       >
     </div>

@@ -1,28 +1,49 @@
 <template>
   <div class="wrapper">
     <img src="http://www.dell-lee.com/imgs/vue3/user.png" class="wrapper__img">
-    <div class="wrapper__input">
-      <input
-      type="text"
-      class="wrapper__input__content"
-      placeholder="请输入手机号"
-      v-model="username"
-      >
+    <div class="register__step1" v-if="step===1">
+      <div class="wrapper__input">
+        <input
+        type="text"
+        class="wrapper__input__content"
+        placeholder="请输入手机号"
+        v-model="phone"
+        >
+      </div>
+      <div class="wrapper__input">
+        <input
+        type="text"
+        class="wrapper__input__content"
+        placeholder="请输入验证码"
+        v-model="password"
+        >
+      </div>
+      <div class="wrapper__send">
+        <van-button square type="primary" :disabled="waiting<60" @click="handleSend">{{ buttonText+(60-waiting>0?`(${waiting})`:'') }}</van-button>
+      </div>
+      <div class="wrapper__register-button" @click="handleRegister">注册</div>
+      <div class="wrapper__tools">
+        <span class="wrapper__tools__register" @click="handleGoLogin">已有账号去登录</span>
+      </div>
     </div>
-    <div class="wrapper__input">
-      <input
-      type="text"
-      class="wrapper__input__content"
-      placeholder="请输入验证码"
-      v-model="password"
-      >
-    </div>
-    <div class="wrapper__send">
-      <van-button square type="primary" :disabled="waiting<60" @click="handleSend">{{ buttonText+(60-waiting>0?`(${waiting})`:'') }}</van-button>
-    </div>
-    <div class="wrapper__register-button" @click="handleRegister">注册</div>
-    <div class="wrapper__tools">
-      <span class="wrapper__tools__register" @click="handleGoLogin">已有账号去登录</span>
+    <div class="register__step2" v-else>
+      <div class="wrapper__input">
+        <input
+        type="text"
+        class="wrapper__input__content"
+        placeholder="设置你的登录名称"
+        v-model="username"
+        >
+      </div>
+      <div class="wrapper__input">
+        <input
+          type="password"
+          class="wrapper__input__content"
+          placeholder="设置你的登录密码"
+          v-model="password"
+        >
+      </div>
+      <div class="wrapper__register-button" @click="handleConfirmRegister">确定</div>
     </div>
   </div>
 </template>
@@ -41,22 +62,28 @@ export default {
     const data = reactive({
       username: '',
       password: '',
+      phone: '',
       buttonText: '发送验证码',
-      waiting: 60
+      waiting: 60,
+      step: 1
     })
+
     const handleRegister = async () => {
       try {
         const result = await post('/user/register_phone', {}, {
           params: {
-            phone: data.username,
+            phone: data.phone,
             code: data.password
           }
         })
         if (result.status === 10000) {
-          Toast.success('注册成功')
-          setTimeout(() => {
-            router.push({ name: 'CodeLogin' })
-          }, 2100)
+          Toast.success('请设置密码')
+          data.step = 2
+          data.password = null
+          data.username = null
+          // setTimeout(() => {
+          //   router.push({ name: 'CodeLogin' })
+          // }, 2100)
         } else {
           Toast.fail(result.msg)
         }
@@ -64,18 +91,52 @@ export default {
         Toast.fail('请求失败')
       }
     }
+
+    const handleConfirmRegister = async () => {
+      if (!data.password || data.password.length < 6) {
+        Toast.fail('密码长度不小于6！')
+        return
+      }
+      if (!data.username) {
+        Toast.fail('请设置登录名！')
+        return
+      }
+      try {
+        // console.log(1)
+        const result = await post('/user/register', {}, {
+          params: {
+            username: data.username,
+            password: data.password,
+            phone: data.phone
+          }
+        })
+        if (result.status === 10000) {
+          Toast.success(result.msg)
+          setTimeout(() => {
+            router.push({ name: 'Setting', params: { from: 'register' } })
+          }, 1100)
+        } else {
+          Toast.fail(result.msg)
+        }
+      } catch (e) {
+        Toast.fail('请求失败')
+      }
+    }
+
     const handleGoLogin = () => {
       router.push({ name: 'Login' })
     }
+
     let timer = null
     const handleSend = async () => {
-      if (!data.username) {
+      if (!data.phone) {
         Toast.fail('请输入手机号')
         return
       }
-      const res = await get('/user/auth_code', { phone: data.username })
+      data.password = null
+      Toast.success('验证码已发送')
+      const res = await get('/user/auth_code', { phone: data.phone })
       if (res.status === 10000) {
-        Toast.success('验证码已发送')
         data.buttonText = '重新发送'
         data.waiting = 60
         timer = setInterval(() => {
@@ -92,6 +153,7 @@ export default {
     return {
       handleGoLogin,
       handleRegister,
+      handleConfirmRegister,
       handleSend,
       ...toRefs(data)
     }
