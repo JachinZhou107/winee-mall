@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 18:38:19
- * @LastEditTime: 2021-08-10 20:53:57
+ * @LastEditTime: 2021-08-10 22:00:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productList\ProductList.vue
@@ -279,7 +279,7 @@ export default {
       width: 100%;
       height: 1.44rem;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       padding: .12rem;
       box-sizing: border-box;
       border-bottom: solid 1PX #f1f1f1;
