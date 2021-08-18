@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-09 20:27:32
+ * @LastEditTime: 2021-08-18 09:43:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\Home.vue
@@ -11,7 +11,6 @@
     <StaticPart />
     <NearBy name="新品上线" api="/portal/newPdt"/>
     <NearBy name="热销商品" api="/portal/hotPdt"/>
-    <!-- NearBy name="最新推荐" api="/portal/nicePdt"/>< -->
   </div>
   <Docker currentPage="0"/>
 </template>

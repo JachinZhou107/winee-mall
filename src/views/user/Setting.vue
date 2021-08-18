@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:38:52
- * @LastEditTime: 2021-08-10 22:10:56
+ * @LastEditTime: 2021-08-18 10:25:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\user\setting.vue
@@ -96,7 +96,8 @@ export default {
       const formData = new FormData()
       formData.append('file', file.file)
       const { data } = await post('/admin/product/uploadFile', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 24000
       })
       state.face[0] = { url: data }
     }
@@ -125,7 +126,7 @@ export default {
   }
   .save-btn {
     width: 80%;
-    margin: 20px auto ;
+    margin: .2rem auto ;
   }
 }
 </style>

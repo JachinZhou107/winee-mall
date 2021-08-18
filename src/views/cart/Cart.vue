@@ -163,12 +163,12 @@ export default {
     }
 
     const onChange = async (value, detail) => {
-      if (value > 5) {
-        Toast.fail('超出单个商品的最大购买数量')
+      if (value > 9) {
+        Toast.fail('商品数量不多于9')
         return
       }
       if (value < 1) {
-        Toast.fail('商品不得小于0')
+        Toast.fail('商品数量不小于0')
         return
       }
       if (
@@ -200,7 +200,6 @@ export default {
         Toast.fail('请选择商品进行结算')
         return
       }
-      // const order = await get('/order/create')
       router.push({ path: '/create-order' })
     }
 
@@ -228,6 +227,7 @@ export default {
     }
 
     const allCheck = async () => {
+      Toast.loading({ forbidClick: true })
       if (!state.checkAll) {
         await post('/cart/checkALL')
         state.result = state.list.map((item) => item.productId)
@@ -235,6 +235,7 @@ export default {
         await post('/cart/unCheckALL')
         state.result = []
       }
+      Toast.clear()
     }
 
     return {
@@ -297,19 +298,19 @@ export default {
         display: flex;
         justify-content: space-between;
         .price {
-          font-size: 16px;
+          font-size: .16rem;
           color: red;
-          line-height: 28px;
+          line-height: .28rem;
         }
         .van-icon-delete {
-          font-size: 20px;
-          margin-top: 4px;
+          font-size: .2rem;
+          margin-top: .04rem;
         }
       }
     }
   }
   .delete-button {
-    width: 50px;
+    width: .5rem;
     height: 100%;
   }
 }
@@ -317,17 +318,17 @@ export default {
   width: 50%;
   margin: 0 auto;
   text-align: center;
-  margin-top: 200px;
+  margin-top: 2rem;
   .empty-cart {
-    width: 150px;
-    margin-bottom: 20px;
+    width: 1.5rem;
+    margin-bottom: .2rem;
   }
   .van-icon-smile-o {
-    font-size: 50px;
+    font-size: .5rem;
   }
   .title {
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: .16rem;
+    margin-bottom: .2rem;
   }
 }
 .cart {
@@ -335,7 +336,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0.51rem;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1PX solid #f1f1f1;
 }
 .van-submit-bar {
   position: absolute;

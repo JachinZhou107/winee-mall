@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-06 11:04:28
+ * @LastEditTime: 2021-08-18 09:58:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\ProductInfo.vue
@@ -30,7 +30,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../style/viriables.scss';
+@import '../../style/viriables.scss';
+
 .shop {
   display: flex;
   flex-direction: column;

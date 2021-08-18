@@ -53,7 +53,7 @@ export default {
       position: absolute;
       width: .30rem;
       height: .32rem;
-      left: 18px;
+      left: .18rem;
       b {
         position: absolute;
         left: .03rem;

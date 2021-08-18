@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-10 22:11:10
+ * @LastEditTime: 2021-08-18 09:45:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -25,9 +25,10 @@
 
 <script>
 import { ref } from 'vue'
-import { get } from '../../utils/request'
-import ProductInfo from '../../components/ProductInfo'
 import { Toast } from 'vant'
+
+import { get } from '../../utils/request'
+import ProductInfo from './ProductInfo'
 
 const useNearbyList = (api) => {
   const nearbyList = ref([])

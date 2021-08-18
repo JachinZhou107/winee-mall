@@ -37,7 +37,7 @@
               :key="one.productId"
               :num="one.quantity"
               :price="one.currentUnitPrice"
-              desc="全场包邮"
+              :desc="'顺丰包邮'"
               :title="one.productName"
               :thumb="one.productImage"
             />
@@ -137,7 +137,7 @@ export default {
   box-sizing: border-box;
   color: #252525;
   background: #fff;
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1PX solid #dcdcdc;
   .van-tabs {
     position: absolute;
     top: .48rem;
@@ -158,10 +158,7 @@ export default {
     left: 0;
     z-index: 1000;
     width: 100%;
-    border-bottom: 1px solid #e9e9e9;
-  }
-  .skeleton {
-    margin-top: 60px;
+    border-bottom: 1PX solid #e9e9e9;
   }
   .content {
     overflow: hidden;
@@ -178,7 +175,7 @@ export default {
       background: #f9f9f9;
     }
     .order-item-box {
-      margin: 20px 10px;
+      margin: .2rem .1rem;
       background-color: #fff;
       .order-item-header {
         padding: .1rem .2rem 0 .2rem;

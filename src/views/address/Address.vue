@@ -7,8 +7,8 @@
         v-model="chosenAddressId"
         :list="list"
         default-tag-text="默认"
-        @add="onAdd"
-        @edit="onEdit"
+        @add="handleAddAddr"
+        @edit="handleEditAddr"
         @select="select"
       />
       <van-address-list
@@ -16,18 +16,10 @@
         v-model="chosenAddressId"
         :list="list"
         default-tag-text="默认"
-        @add="onAdd"
-        @edit="onEdit"
+        @add="handleAddAddr"
+        @edit="handleEditAddr"
       />
     </div>
-    <!-- <div class="pagination">
-      <van-pagination
-        v-model="page"
-        :page-count="totalPage"
-        mode="simple"
-        @change="paging"
-      />
-    </div> -->
   </div>
 </template>
 
@@ -79,11 +71,11 @@ export default {
       })
     }
 
-    const onAdd = () => {
+    const handleAddAddr = () => {
       router.push({ path: '/edit-address', query: { type: 'add', from: state.from } })
     }
 
-    const onEdit = (item) => {
+    const handleEditAddr = (item) => {
       router.push({ path: '/edit-address', query: { type: 'edit', addressId: item.id, from: state.from } })
     }
 
@@ -91,13 +83,10 @@ export default {
       router.push({ path: '/create-order', query: { addressId: item.id } })
     }
 
-    // const paging = () => {
-    //   init()
-    // }
     return {
       ...toRefs(state),
-      onAdd,
-      onEdit,
+      handleAddAddr,
+      handleEditAddr,
       select
     }
   }

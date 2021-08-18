@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 18:38:19
- * @LastEditTime: 2021-08-10 22:11:04
+ * @LastEditTime: 2021-08-18 10:11:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productList\ProductList.vue
@@ -37,7 +37,7 @@
         <van-list
           v-model:loading="loading"
           :finished="finished"
-          :finished-text="productList.length ? '到底了哦~' : '想要什么搜搜看吧~'"
+          :finished-text="productList.length ? '到底了哦~' : '想买什么搜搜看吧~'"
           @load="onLoad"
         >
           <template v-if="productList.length">
@@ -71,7 +71,6 @@ export default {
     const state = reactive({
       keywords: route.query.keywords || '',
       searchBtn: false,
-      seclectActive: false,
       refreshing: false,
       select: '',
       list: [],
@@ -92,14 +91,10 @@ export default {
       { text: '价格升序', value: 'price&asc' },
       { text: '价格降序', value: 'price&desc' }
     ]
-    // onMounted(() => {
-    //   init()
-    // })
 
     const init = async () => {
       const { categoryId } = route.query
       if (!categoryId && !state.keywords) {
-        // Toast.fail('请输入关键词')
         state.finished = true
         state.refreshing = false
         state.loading = false
@@ -228,7 +223,7 @@ export default {
         box-sizing: border-box;
         background-color: #f5f5f5;
         height: .32rem;
-        border: solid 0px;
+        border: solid 0;
         width: 100%;
         font-size: .14rem;
         line-height: .16rem;

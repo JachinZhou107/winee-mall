@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-10 01:21:16
- * @LastEditTime: 2021-08-10 11:03:21
+ * @LastEditTime: 2021-08-18 10:20:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\login\codeLogin.vue
@@ -55,12 +55,12 @@ export default {
       waiting: 60
     })
     const handleLogin = async () => {
+      Toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: '登录中...'
+      })
       try {
-        Toast.loading({
-          duration: 0,
-          forbidClick: true,
-          message: '登录中...'
-        })
         const result = await post('/user/login_phone', {}, {
           params: {
             phone: data.username,
@@ -73,7 +73,7 @@ export default {
           setTimeout(() => {
             if (!result.data.username) router.push({ name: 'Setting', query: { from: 'login' } })
             else router.push({ name: 'Home' })
-          }, 2100)
+          }, 2000)
         } else {
           Toast.fail(result.msg)
         }
@@ -157,8 +157,7 @@ export default {
   &__input {
     background: #F9F9F9;
     border: 1PX solid rgba(0,0,0,0.10);
-    border-radius: 6px;
-    border-radius: 6px;
+    border-radius: .06rem;
     height: .48rem;
     margin: 0 .4rem .16rem .4rem;
     padding: 0 .16rem;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:55:01
- * @LastEditTime: 2021-08-10 22:13:35
+ * @LastEditTime: 2021-08-18 10:24:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\orderDetail.vue
@@ -51,8 +51,7 @@
         <label>下单时间：</label>
         <span>{{ detail.createTime }}</span>
       </div>
-      <!-- <van-button v-if="[1,2,3].includes(detail.orderStatus)" style="margin-bottom: 10px" color="#1baeae" block @click="confirmOrder(detail.orderNo)">确认订单</van-button> -->
-      <van-button v-if="detail.status === 10" style="margin-bottom: 10px" color="#1fa4fc" block @click="showPayFn">去支付</van-button>
+      <van-button v-if="detail.status === 10" style="margin-bottom: .10rem" color="#1fa4fc" block @click="showPayFn">去支付</van-button>
       <van-button v-if="(detail.status>0 && detail.status <= 20)" block @click="handleCancelOrder(detail.orderNo)">取消订单</van-button>
       <van-button v-if="(detail.status === 40 )" color="#1fa4fc" block @click="handleConfirmReceive(detail.orderNo)">确认收货</van-button>
     </div>
@@ -85,7 +84,7 @@
       position="bottom"
       :style="{ height: '15%' }"
     >
-      <div :style="{ width: '90%', margin: '0 auto', padding: '20px 0' }">
+      <div :style="{ width: '90%', margin: '0 auto', padding: '.2rem 0' }">
         <van-button color="#1989fa" block @click="handlePayOrder(detail.orderNo)">支付宝支付</van-button>
       </div>
       <div v-html="payPage"></div>
@@ -221,10 +220,10 @@ export default {
     }
     .order-info {
       background: #fff;
-      padding: 20px;
-      font-size: 15px;
+      padding: .20rem;
+      font-size: .15rem;
       .status-item {
-        margin-bottom: 10px;
+        margin-bottom: .1rem;
         display: flex;
         align-items: center;
         label {
@@ -237,11 +236,11 @@ export default {
     }
     .order-price {
       background: #fff;
-      margin: 20px 0;
-      padding: 20px;
-      font-size: 15px;
+      margin: .2rem 0;
+      padding: .2rem;
+      font-size: .15rem;
       .price-item {
-        margin-bottom: 10px;
+        margin-bottom: .1rem;
         label {
           color: #999;
         }

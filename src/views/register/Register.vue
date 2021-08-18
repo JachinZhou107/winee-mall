@@ -210,8 +210,7 @@ export default {
   &__input {
     background: #F9F9F9;
     border: 1PX solid rgba(0,0,0,0.10);
-    border-radius: 6px;
-    border-radius: 6px;
+    border-radius: .06rem;
     height: .48rem;
     margin: 0 .4rem .16rem .4rem;
     padding: 0 .16rem;

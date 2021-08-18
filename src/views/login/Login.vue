@@ -39,17 +39,17 @@ const useLogin = () => {
     password: ''
   })
   const handleLogin = async () => {
+    Toast.loading({
+      duration: 0,
+      forbidClick: true,
+      message: '登录中...'
+    })
     try {
       const config = {}
       config.params = {
         username: data.username,
         password: data.password
       }
-      Toast.loading({
-        duration: 0,
-        forbidClick: true,
-        message: '登录中...'
-      })
       const result = await post('/user/login', {}, config)
       Toast.clear()
       if (result?.status === 10000) {
@@ -109,8 +109,7 @@ export default {
   &__input {
     background: #F9F9F9;
     border: 1PX solid rgba(0,0,0,0.10);
-    border-radius: 6px;
-    border-radius: 6px;
+    border-radius: .06rem;
     height: .48rem;
     margin: 0 .4rem .16rem .4rem;
     padding: 0 .16rem;

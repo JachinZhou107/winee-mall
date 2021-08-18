@@ -162,7 +162,6 @@ export default {
         width: 100%;
         box-sizing: border-box;
         padding:  .05rem;
-        // height: 300px;
       }
     }
     .product__info {

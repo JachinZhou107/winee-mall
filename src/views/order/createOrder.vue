@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 10:54:50
- * @LastEditTime: 2021-08-10 22:11:05
+ * @LastEditTime: 2021-08-18 10:23:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\order\CreateOrder.vue
@@ -59,7 +59,7 @@
       :style="{ height: '20%' }"
       @close="close"
     >
-      <div :style="{ width: '90%', margin: '0 auto', padding: '50px 0 0 0' }">
+      <div :style="{ width: '90%', margin: '0 auto', padding: '.5rem 0 0 0' }">
         <van-button
           v-show="!payPage"
           color="#1989fa"
@@ -108,10 +108,13 @@ export default {
       const {
         data: { orderItemVoList: list, productTotalPrice: total }
       } = await get('/order/getCartSelectPdt')
-      const { data: address } = addressId
+
+      if (list.length <= 0) { route.push('/cart') }
+      const { data: address } = (addressId
         ? await get('/ship/detail', { shippingId: addressId })
-        : await get('/ship/default')
+        : await get('/ship/default'))
       if (!address) {
+        Toast.fail('请选择或添加地址！')
         router.push({ path: '/address' })
         return
       }
@@ -177,21 +180,21 @@ export default {
     }
   }
   .address {
-    margin: 10px 0;
+    margin: .1rem 0;
   }
   .arrow {
     position: absolute;
-    right: 10px;
+    right: .1rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: .2rem;
   }
   &::before {
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
-    height: 2px;
+    height: .02rem;
     background: -webkit-repeating-linear-gradient(
       135deg,
       #ff6c6c 0,
@@ -214,7 +217,7 @@ export default {
       transparent 0,
       transparent 50%
     );
-    background-size: 80px;
+    background-size: .8rem;
     content: "";
   }
 }
@@ -241,7 +244,7 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
-      padding: 20px;
+      padding: .2rem;
       .good__title {
         display: flex;
         justify-content: space-between;
@@ -253,13 +256,13 @@ export default {
         display: flex;
         justify-content: space-between;
         .price {
-          font-size: 16px;
+          font-size: .16rem;
           color: red;
-          line-height: 28px;
+          line-height: .28rem;
         }
         .van-icon-delete {
-          font-size: 20px;
-          margin-top: 4px;
+          font-size: .2rem;
+          margin-top: .04rem;
         }
       }
     }
@@ -270,23 +273,23 @@ export default {
     left: 0;
     width: 100%;
     background: #fff;
-    padding: 10px 0;
-    padding-bottom: 50px;
-    border-top: 1px solid #e9e9e9;
+    padding: .1rem 0;
+    padding-bottom: .5rem;
+    border-top: 1PX solid #e9e9e9;
     > div {
       display: flex;
       justify-content: space-between;
       padding: 0 5%;
-      margin: 10px 0;
-      font-size: 14px;
+      margin: .1rem 0;
+      font-size: .14rem;
       span:nth-child(2) {
         color: red;
-        font-size: 18px;
+        font-size: .18rem;
       }
     }
     .pay__btn {
       position: fixed;
-      bottom: 7px;
+      bottom: .07rem;
       right: 0;
       left: 0;
       width: 90%;

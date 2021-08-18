@@ -2,12 +2,12 @@
   <a-header :title="`${type == 'add' ? '新增地址' : '编辑地址'}`"></a-header>
   <div class="address-edit-box">
     <van-address-edit
-      class="edit"
-      :area-list="areaList"
-      :address-info="addressInfo"
-      :show-delete="type == 'edit'"
+      class="address"
       show-set-default
       show-search-result
+      :area-list="areaList"
+      :address-info="addressInfo"
+      :show-delete="type === 'edit'"
       :search-result="searchResult"
       :area-columns-placeholder="['请选择', '请选择', '请选择']"
       @save="onSave"
@@ -76,18 +76,28 @@ export default {
       if (state.type === 'edit') {
         params.id = state.addressId
       }
-      await state.type === 'add'
-        ? post('/ship/add', {}, { params })
-        : post('/ship/update', {}, { params })
-      Toast('保存成功')
+      Toast.loading({
+        message: '保存中',
+        forbidClick: true
+      })
+      state.type === 'add'
+        ? await post('/ship/add', {}, { params })
+        : await post('/ship/update', {}, { params })
+      Toast.clear()
+      Toast.success('保存成功')
       setTimeout(() => {
         router.back()
       }, 1000)
     }
 
     const onDelete = async () => {
+      Toast.loading({
+        message: '删除中',
+        forbidClick: true
+      })
       await post('/ship/del', {}, { params: { shippingId: state.addressId } })
-      Toast('删除成功')
+      Toast.clear()
+      Toast.success('删除成功')
       setTimeout(() => {
         router.back()
       }, 1000)
@@ -105,10 +115,11 @@ export default {
 
 <style lang="scss">
 @import '../../style/viriables.scss';
-.edit {
+
+.address {
   .van-field__body {
     textarea {
-      height: 26px!important;
+      height: .26rem!important;
     }
   }
 }
