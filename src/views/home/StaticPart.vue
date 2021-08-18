@@ -2,7 +2,7 @@
   <div class="search">
     <span class="search__title">云逸商城 ｜</span>
     <span class="search__input">
-      <router-link to="/product-list?from=home"><span>云蒸霞蔚，逸群绝伦</span></router-link>
+      <router-link to="/product-list?from=Home"><span>云蒸霞蔚，逸群绝伦</span></router-link>
     </span>
     <span class="loginInfo">
       <span v-if="loginStatus">
@@ -13,7 +13,7 @@
   </div>
   <van-swipe class="banner" :autoplay="3000" >
     <van-swipe-item v-for="image in images" :key="image">
-    <van-image :src="image" fit="contain" height='100%'/>
+    <van-image :src="image" fit="cover" height='100%'/>
   </van-swipe-item>
   </van-swipe>
   <van-grid
@@ -33,15 +33,10 @@
 
 <script>
 import { ref } from 'vue'
-import { post } from '../../utils/request'
+import { post, get } from '../../utils/request'
 export default {
   name: 'StaticPart',
   setup () {
-    const images = [
-      'https://img.yzcdn.cn/vant/apple-1.jpg',
-      'https://img.yzcdn.cn/vant/apple-2.jpg',
-      'http://www.dell-lee.com/imgs/vue3/banner.jpg'
-    ]
     const iconsInfo = [
       {
         desc: '云逸超市',
@@ -85,6 +80,7 @@ export default {
         id: 10
       }
     ]
+    const images = ref([])
     const loginStatus = ref(0)
     const getLoginStatus = async () => {
       const result = await post('/user/getUser')
@@ -93,6 +89,12 @@ export default {
     getLoginStatus().then((res) => {
       loginStatus.value = res
     })
+    get('/portal/nicePdt').then((res) => {
+      images.value = res.data.list.map((value) => {
+        return value.mainImage
+      })
+    })
+
     return {
       iconsInfo,
       images,
@@ -149,7 +151,7 @@ export default {
     }
   }
   .banner {
-    height: 1.2rem;
+    height: 1.3rem;
     align-content: center;
   }
 </style>

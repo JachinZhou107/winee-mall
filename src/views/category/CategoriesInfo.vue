@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 14:13:30
- * @LastEditTime: 2021-07-29 10:26:48
+ * @LastEditTime: 2021-08-10 22:11:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\ProductsInfo.vue
@@ -17,7 +17,7 @@
         @click="handleSelectCategory(secItem.id)"
       >
         <img
-          src="//s.weituibao.com/1583591077131/%E5%88%86%E7%B1%BB.png"
+          src="https://zackyj-typora.oss-cn-chengdu.aliyuncs.com/YiMall/2021/08/09/1628523338759.png"
           alt=""
           class="category__item__img"
         >
@@ -33,7 +33,6 @@ import { useRouter } from 'vue-router'
 const useCategory = () => {
   const router = useRouter()
   const handleSelectCategory = (categoryId) => {
-    // console.log(categoryId)
     router.push({ path: '/product-list', query: { categoryId: categoryId } })
   }
   return { handleSelectCategory }
@@ -49,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../style/mixins.scss';
+@import '../../style/mixins.scss';
 .categories {
   &__box {
     box-sizing: border-box;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:59:50
+ * @LastEditTime: 2021-08-10 22:12:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\components\Docker.vue
@@ -35,7 +35,6 @@ export default {
   props: ['currentPage'],
   setup (props) {
     const active = ref(parseInt(props.currentPage))
-    console.log(active)
     const route = ['Home', 'Category', 'Cart', 'User']
     const router = useRouter()
     const pageChange = (index) => {

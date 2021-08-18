@@ -1,53 +1,48 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 18:38:19
- * @LastEditTime: 2021-07-29 19:58:19
+ * @LastEditTime: 2021-08-18 10:11:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\productList\ProductList.vue
 -->
 <template>
-  <div class="wrapper">
-    <div class="header">
-      <div class="search">
-        <div
-          class="search__backarrow"
-          @click="handleGoBack"
-        ><b></b><i></i></div>
-        <div class="search__content">
-          <span class="iconfont">&#xe644;</span>
-          <span class="search__content__input" >
-            <input
-              type="text"
-              name="search"
-              placeholder="请输入关键词"
-              v-model="keywords"
-            >
-          </span>
-        </div>
-        <button class="search__submit" @click="getSearch">搜索</button>
+  <div class="header">
+    <div class="search">
+      <div
+        class="search__backarrow"
+        @click="handleGoBack"
+      ><b></b><i></i></div>
+      <div class="search__content">
+        <span class="iconfont">&#xe644;</span>
+        <span class="search__content__input" >
+          <input
+            type="text"
+            name="search"
+            placeholder="请输入关键词"
+            v-model="keywords"
+          >
+        </span>
       </div>
-      <!-- <van-tabs color="#1fa4fc" type="card" @click="changeTab">
-        <van-tab title="推荐" name="" ></van-tab>
-        <van-tab title="新品" name="new" ></van-tab>
-        <van-tab title="价格" name="price" ></van-tab>
-      </van-tabs> -->
-      <van-dropdown-menu active-color="#1fa4fc" >
-        <van-dropdown-item v-model="select" :options="option1" />
-        <van-dropdown-item v-model="sort" :options="option2" @change="onRefresh" />
-      </van-dropdown-menu>
+      <button class="search__submit" @click="getSearch">搜索</button>
     </div>
+    <van-dropdown-menu active-color="#1fa4fc" >
+      <van-dropdown-item v-model="select" :options="option1" />
+      <van-dropdown-item v-model="sort" :options="option2" @change="onRefresh" />
+    </van-dropdown-menu>
+  </div>
+  <div class="wrapper">
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh" >
         <van-list
           v-model:loading="loading"
           :finished="finished"
-          :finished-text="productList.length ? '到底了哦~' : '想要什么搜搜看吧~'"
+          :finished-text="productList.length ? '到底了哦~' : '想买什么搜搜看吧~'"
           @load="onLoad"
         >
           <template v-if="productList.length">
             <div class="product__item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
-              <img :src="'http://backend-api-01.newbee.ltd'+item.goodsCoverImg" />
+              <img :src="item.mainImage" />
               <div class="product__item__info">
                 <p class="product__item__name">{{item.name}}</p>
                 <p class="product__item__subtitle">{{item.subtitle}}</p>
@@ -76,7 +71,6 @@ export default {
     const state = reactive({
       keywords: route.query.keywords || '',
       searchBtn: false,
-      seclectActive: false,
       refreshing: false,
       select: '',
       list: [],
@@ -97,14 +91,10 @@ export default {
       { text: '价格升序', value: 'price&asc' },
       { text: '价格降序', value: 'price&desc' }
     ]
-    // onMounted(() => {
-    //   init()
-    // })
 
     const init = async () => {
       const { categoryId } = route.query
       if (!categoryId && !state.keywords) {
-        // Toast.fail('请输入关键词')
         state.finished = true
         state.refreshing = false
         state.loading = false
@@ -113,6 +103,7 @@ export default {
       const { data, data: { list } } = await get('/product/list',
         {
           pageNumber: state.page,
+          pageSize: 20,
           categoryId: categoryId,
           keyword: state.keywords,
           sortBy: state.sort.split('&')[0],
@@ -126,7 +117,7 @@ export default {
     }
 
     const handleGoBack = () => {
-      router.back()
+      router.push({ name: route.query.from || 'Category' })
     }
 
     const productDetail = (item) => {
@@ -144,7 +135,6 @@ export default {
     }
 
     const onRefresh = () => {
-      console.log('refresh')
       state.refreshing = true
       state.finished = false
       state.loading = true
@@ -157,7 +147,6 @@ export default {
     }
 
     const changeTab = (name) => {
-      console.log('name', name)
       state.sortBy = name
       onRefresh()
     }
@@ -181,16 +170,14 @@ export default {
 @import '../../style/viriables.scss';
 @import '../../style/mixins.scss';
 
-.wrapper {
-  padding: 0 .18rem;
-  .header {
-    position: absolute;
-    top: 0;
-    z-index: 999;
-    margin: 0 -0.18rem;
-    width: 100%;
-    background-color: #fff;
-  }
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  background-color: #fff;
   .search {
     margin: .16rem .64rem 0 .42rem;
     line-height: .31rem;
@@ -236,7 +223,7 @@ export default {
         box-sizing: border-box;
         background-color: #f5f5f5;
         height: .32rem;
-        border: solid 0px;
+        border: solid 0;
         width: 100%;
         font-size: .14rem;
         line-height: .16rem;
@@ -264,6 +251,14 @@ export default {
       color: #f5f5f5;
     }
   }
+}
+.wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
   .van-tabs {
     margin: -0.14rem 0 .1rem 0;
   }
@@ -277,7 +272,7 @@ export default {
       width: 100%;
       height: 1.44rem;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       padding: .12rem;
       box-sizing: border-box;
       border-bottom: solid 1PX #f1f1f1;

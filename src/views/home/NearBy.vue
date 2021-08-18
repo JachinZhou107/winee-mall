@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-07-30 10:15:12
+ * @LastEditTime: 2021-08-18 09:45:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\home\NearBy.vue
@@ -12,8 +12,8 @@
     <div class="nearby__box">
       <router-link
         v-for="item in nearbyList"
-        :key="item._id"
-        :to="`/product-detail/${item._id}`"
+        :key="item.id"
+        :to="`/product-detail/${item.id}?from=home`"
       >
         <ProductInfo
           :item="item"
@@ -25,36 +25,33 @@
 
 <script>
 import { ref } from 'vue'
-import { get } from '../../utils/request'
-import ProductInfo from '../../components/ProductInfo'
 import { Toast } from 'vant'
 
-const useNearbyList = () => {
+import { get } from '../../utils/request'
+import ProductInfo from './ProductInfo'
+
+const useNearbyList = (api) => {
   const nearbyList = ref([])
   const getNearbyList = async () => {
     Toast.loading({
       message: '加载中',
       forbidClick: true
     })
-    const result = await get('/api/shop/hot-list')
-    // console.log(result)
-    if (result?.errno === 0 && result?.data?.length) {
-      nearbyList.value = result.data
-    }
+    const { data } = await get(api)
+    nearbyList.value = data
     Toast.clear()
   }
-  // console.log(nearbyList)
   return { nearbyList, getNearbyList }
 }
 
 export default {
   name: 'NearBy',
-  props: ['name'],
+  props: ['name', 'api'],
   components: {
     ProductInfo
   },
-  setup () {
-    const { nearbyList, getNearbyList } = useNearbyList()
+  setup (props) {
+    const { nearbyList, getNearbyList } = useNearbyList(props.api)
     getNearbyList()
     return {
       nearbyList

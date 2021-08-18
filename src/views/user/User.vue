@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-30 10:38:30
- * @LastEditTime: 2021-07-30 15:54:19
+ * @LastEditTime: 2021-08-10 21:14:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\views\user\user.vue
@@ -12,11 +12,11 @@
     <div class="user__info">
       <div class="user__info__img">
         <van-image
-          src="https://s.yezgea02.com/1604040746310/aaaddd.png"
+          :src="face"
           width=".7rem"
           height=".7rem"
           round
-          fit="fill"
+          fit="cover"
         />
       </div>
       <div class="user__info__list">
@@ -27,8 +27,8 @@
     </div>
     <div class="user__list">
       <van-cell-group>
-        <van-cell title="订单管理" is-link to="home" />
-        <van-cell title="地址管理" is-link to="home" />
+        <van-cell title="订单管理" is-link to="order" />
+        <van-cell title="地址管理" is-link @click="goTo('/address', { from: 'user' })" />
         <van-collapse v-model="activeNames">
           <van-collapse-item title="账号管理" name="1">
             <van-cell title="修改资料" is-link to="setting" />
@@ -47,6 +47,7 @@ import { useRouter } from 'vue-router'
 import { post, get } from '../../utils/request'
 import aHeader from '../../components/aHeader'
 import Docker from '../../components/Docker'
+import { Dialog } from 'vant'
 
 export default {
   name: 'User',
@@ -59,26 +60,41 @@ export default {
       username: '',
       password: '',
       email: '',
-      phone: ''
+      phone: '',
+      face: ''
     })
     const activeNames = ref([])
+
     const getUserData = async () => {
       const result = await post('/user/getUser')
       userData.username = result.data.username
       userData.password = result.data.password
       userData.email = result.data.email
       userData.phone = result.data.phone
+      userData.face = result.data.face
     }
     getUserData()
+
     const router = useRouter()
-    const handleLogout = async () => {
-      const result = await get('/user/logout')
-      if (result.status === 10000) { router.push({ name: 'Home' }) }
+    const handleLogout = () => {
+      Dialog.confirm({
+        title: '确认退出登录？',
+        confirmButtonColor: '#1fa4fc'
+      }).then(() => {
+        get('/user/logout').then(result => {
+          if (result.status === 10000) { router.push({ name: 'Home' }) }
+        })
+      })
+    }
+
+    const goTo = (r, query) => {
+      router.push({ path: r, query: query || {} })
     }
     return {
       ...toRefs(userData),
       activeNames,
-      handleLogout
+      handleLogout,
+      goTo
     }
   }
 }
@@ -90,6 +106,7 @@ export default {
 .wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: .5rem;
   .user__info {
     display: flex;
     align-items: center;

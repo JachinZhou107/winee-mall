@@ -5,7 +5,7 @@
       <input
       type="text"
       class="wrapper__input__content"
-      placeholder="请输入手机号"
+      placeholder="请输入账号名称或手机号"
       v-model="username"
       >
     </div>
@@ -19,6 +19,7 @@
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登陆</div>
     <div class="wrapper__tools">
+      <span class="wrapper__tools__code-login" @click="handleGoCodeLogin">验证码登录</span> |
       <span class="wrapper__tools__register" @click="handleGoRegister">立即注册</span> |
       <span class="wrapper__tools__password">忘记密码</span>
     </div>
@@ -38,6 +39,11 @@ const useLogin = () => {
     password: ''
   })
   const handleLogin = async () => {
+    Toast.loading({
+      duration: 0,
+      forbidClick: true,
+      message: '登录中...'
+    })
     try {
       const config = {}
       config.params = {
@@ -45,7 +51,9 @@ const useLogin = () => {
         password: data.password
       }
       const result = await post('/user/login', {}, config)
+      Toast.clear()
       if (result?.status === 10000) {
+        Toast.success('登录成功')
         router.push({ name: 'Home' })
       } else {
         Toast.fail(result?.msg)
@@ -53,14 +61,6 @@ const useLogin = () => {
     } catch (e) {
       Toast.fail('请求失败')
     }
-
-    // .then(() => {
-    //   alert('成功')
-    //   localStorage.isLogin = true
-    //   router.push({ name: 'Home' })
-    // }).catch(() => {
-    //   alert('失败')
-    // })
   }
 
   const { username, password } = toRefs(data)
@@ -79,9 +79,13 @@ export default {
     const handleGoRegister = () => {
       router.push({ name: 'Register' })
     }
+    const handleGoCodeLogin = () => {
+      router.push({ name: 'CodeLogin' })
+    }
     return {
       handleLogin,
       handleGoRegister,
+      handleGoCodeLogin,
       username,
       password
     }
@@ -105,8 +109,7 @@ export default {
   &__input {
     background: #F9F9F9;
     border: 1PX solid rgba(0,0,0,0.10);
-    border-radius: 6px;
-    border-radius: 6px;
+    border-radius: .06rem;
     height: .48rem;
     margin: 0 .4rem .16rem .4rem;
     padding: 0 .16rem;
@@ -142,8 +145,11 @@ export default {
     text-align: center;
     margin-top: 0.16rem;
     font-size: .14rem;
-    &__register {
+    &__code-login {
       padding-right: .12rem;
+    }
+    &__register {
+      padding: 0 .12rem;
     }
     &__password {
       padding-left: .12rem;

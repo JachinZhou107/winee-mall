@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 13:53:07
- * @LastEditTime: 2021-08-05 18:25:33
+ * @LastEditTime: 2021-08-10 14:23:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-mall\src\main.js
@@ -16,9 +16,10 @@ import {
   List,
   PullRefresh,
   DropdownMenu, DropdownItem,
-  Toast,
+  Toast, Dialog,
   NavBar,
   Image as VanImage,
+  Card,
   Cell, CellGroup,
   Grid, GridItem,
   Swipe, SwipeItem, SwipeCell,
@@ -29,7 +30,15 @@ import {
   Checkbox, CheckboxGroup,
   Stepper,
   Button,
-  Radio
+  Radio,
+  SubmitBar,
+  AddressList, AddressEdit,
+  Popup,
+  Pagination,
+  Field,
+  Uploader,
+  Rate,
+  Step, Steps
 } from 'vant'
 import 'normalize.css'
 import './style/index.scss'
@@ -51,6 +60,7 @@ createApp(App)
   .use(VanImage)
   .use(Cell)
   .use(CellGroup)
+  .use(Card)
   .use(Grid)
   .use(GridItem)
   .use(Swipe)
@@ -70,5 +80,16 @@ createApp(App)
   .use(Stepper)
   .use(Button)
   .use(Radio)
+  .use(SubmitBar)
+  .use(AddressList)
+  .use(AddressEdit)
+  .use(Pagination)
+  .use(Popup)
+  .use(Field)
+  .use(Uploader)
+  .use(Rate)
+  .use(Steps)
+  .use(Step)
+  .use(Dialog)
   .use(Toast)
   .mount('#app')

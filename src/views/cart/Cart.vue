@@ -1,35 +1,34 @@
 <template>
-  <van-nav-bar
-    title="购物车"
-  />
+  <van-nav-bar title="购物车" />
   <div class="cart__body">
-    <div class="cart__selectAll">
-      <div>
-        <van-radio @click="selectAll"/>
-        <span>全选</span>
-      </div>
-      <div>
-        <span>···</span>
-      </div>
-    </div>
-    <van-checkbox-group @change="groupChange" v-model="result" ref="checkboxGroup">
-      <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
-        <div class="good-item">
-          <van-checkbox :name="item.id" />
-          <div class="good-img"><img :src="item.productMainImage" alt=""></div>
-          <div class="good-desc">
-            <div class="good-title">
-              <span>{{ item.productName }}</span>
+    <van-checkbox-group
+      @change="groupChange"
+      v-model="result"
+      ref="checkboxGroup"
+    >
+      <van-swipe-cell
+        :right-width="50"
+        v-for="(item, index) in list"
+        :key="index"
+      >
+        <div class="good__item">
+          <van-checkbox :name="item.productId" @click="checkOne(item)" />
+          <div class="good__img" @click="goTo(`/product-detail/${item.productId}`)">
+            <img :src="item.productMainImage" alt="" />
+          </div>
+          <div class="good__desc">
+            <div class="good__title">
+              <span class="van-multi-ellipsis--l2">{{ item.productName }}</span>
               <span>x{{ item.quantity }}</span>
             </div>
-            <div class="good-btn">
+            <div class="good__btn">
               <div class="price">¥{{ item.productPrice }}</div>
               <van-stepper
                 integer
                 :min="1"
                 :max="5"
                 :model-value="item.quantity"
-                :name="item.id"
+                :name="item.productId"
                 async-change
                 @change="onChange"
               />
@@ -42,44 +41,50 @@
             icon="delete"
             type="danger"
             class="delete-button"
-            @click="deleteGood(item.id)"
+            @click="deleteGood(item.productId)"
           />
         </template>
       </van-swipe-cell>
     </van-checkbox-group>
-  </div>
-  <div class="empty" v-if="!list.length">
-    <img class="empty-cart" src="https://s.yezgea02.com/1604028375097/empty-car.png" alt="空购物车">
-    <div class="title">购物车空空如也</div>
-    <van-button round color="linear-gradient(to left, #39bdce, #0099ff)" type="primary" @click="goTo" block>前往选购</van-button>
-  </div>
-  <div class="cart">
-    <div class="check">
-      <div class="check__icon">
-        <img
-          src="http://www.dell-lee.com/imgs/vue3/basket.png"
-          class="check__icon__img"
-        >
-        <div class="check__icon__tag">{{total}}</div>
-      </div>
-      <div class="check__info">
-        <span class="check__info__title">总计：</span>
-        <span class="check__info__price">&yen; {{price}}</span>
-      </div>
-      <div class="check__button">去结算</div>
+    <div class="empty" v-if="!list.length">
+      <img
+        class="empty-cart"
+        src="https://s.yezgea02.com/1604028375097/empty-car.png"
+        alt="空购物车"
+      />
+      <div class="title">购物车空空如也</div>
+      <van-button
+        round
+        color="linear-gradient(to left, #39bdce, #0099ff)"
+        type="primary"
+        @click="goTo('/home')"
+        block
+        >前往选购</van-button
+      >
     </div>
   </div>
-  <Docker />
+  <van-submit-bar
+    v-if="list.length > 0"
+    class="submit-all van-hairline--top"
+    :price="total * 100"
+    button-text="结算"
+    @submit="onSubmit"
+  >
+    <van-checkbox @click="allCheck" v-model:checked="checkAll"
+      >全选</van-checkbox
+    >
+  </van-submit-bar>
+  <Docker currentPage="2" />
 </template>
 
 <script>
 import { computed, toRefs, reactive, onMounted } from 'vue'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
 
 import Docker from '../../components/Docker'
-import { get } from '../../utils/request'
+import { get, post } from '../../utils/request'
 
 export default {
   name: 'Cart',
@@ -88,45 +93,39 @@ export default {
   },
   setup () {
     const router = useRouter()
-    const store = useStore()
+    // const store = useStore()
     const state = reactive({
       checked: false,
       list: [],
       all: false,
       result: [],
-      checkAll: true
+      checkAll: false
     })
 
     onMounted(() => {
-      console.log('onMounted')
       init()
     })
 
-    // const getCart = async () => {
-    //   const { data } = await get('/product/list')
-    //   console.log(data)
-    //   return data
-    // }
-    const modifyCart = () => {
-      return 1
-    }
-    const deleteCartItem = () => {
-      return {}
-    }
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true })
-      const { data: { cartProductList } } = await get('/cart/list')
+      const { data: data1 } = await get('/cart/list')
+      if (data1) {
+        state.list = data1.cartProductList
+      }
+      const { data: data2 } = await get('/order/getCartSelectPdt')
+      if (data2) {
+        state.result = data2.orderItemVoList.map((item) => item.productId)
+      }
       Toast.clear()
-      state.list = cartProductList
-      state.result = cartProductList.map(item => item.id)
-      console.log(state.list, state.result)
     }
 
     const total = computed(() => {
       let sum = 0
-      const _list = state.list.filter(item => state.result.includes(item.id))
-      _list.forEach(item => {
-        sum += item.goodsCount * item.sellingPrice
+      const _list = state.list.filter((item) =>
+        state.result.includes(item.productId)
+      )
+      _list.forEach((item) => {
+        sum += item.quantity * item.productPrice
       })
       return sum
     })
@@ -135,29 +134,62 @@ export default {
       router.go(-1)
     }
 
-    const goTo = () => {
-      router.push({ path: '/home' })
+    const goTo = (path) => {
+      router.push({ path })
+    }
+
+    const checkOne = async ({ productId }) => {
+      if (state.result.includes(productId)) {
+        await post(
+          '/cart/check',
+          {},
+          {
+            params: {
+              productId
+            }
+          }
+        )
+      } else {
+        await post(
+          '/cart/unCheck',
+          {},
+          {
+            params: {
+              productId
+            }
+          }
+        )
+      }
     }
 
     const onChange = async (value, detail) => {
-      if (value > 5) {
-        Toast.fail('超出单个商品的最大购买数量')
+      if (value > 9) {
+        Toast.fail('商品数量不多于9')
         return
       }
       if (value < 1) {
-        Toast.fail('商品不得小于0')
+        Toast.fail('商品数量不小于0')
         return
       }
-      if (state.list.filter(item => item.id === detail.name)[0].goodsCount === value) return
+      if (
+        state.list.filter((item) => item.productId === detail.name)[0]
+          .quantity === value
+      ) { return }
       Toast.loading({ message: '修改中...', forbidClick: true })
       const params = {
-        id: detail.name,
-        goodsCount: value
+        productId: detail.name,
+        count: value
       }
-      await modifyCart(params)
-      state.list.forEach(item => {
-        if (item.id === detail.name) {
-          item.goodsCount = value
+      await post(
+        '/cart/update',
+        {},
+        {
+          params: params
+        }
+      )
+      state.list.forEach((item) => {
+        if (item.productId === detail.name) {
+          item.quantity = value
         }
       })
       Toast.clear()
@@ -168,34 +200,42 @@ export default {
         Toast.fail('请选择商品进行结算')
         return
       }
-      const params = JSON.stringify(state.result)
-      router.push({ path: '/create-order', query: { ids: params } })
+      router.push({ path: '/create-order' })
     }
 
     const deleteGood = async (id) => {
-      await deleteCartItem(id)
-      store.dispatch('updateCart')
+      await post(
+        '/cart/delete',
+        {},
+        {
+          params: {
+            productId: id
+          }
+        }
+      )
+      // store.dispatch('updateCart')
       init()
     }
 
-    const groupChange = (result) => {
-      console.log(1)
+    const groupChange = async (result) => {
       if (result.length === state.list.length) {
-        console.log(2)
         state.checkAll = true
       } else {
-        console.log(3)
         state.checkAll = false
       }
       state.result = result
     }
 
-    const allCheck = () => {
+    const allCheck = async () => {
+      Toast.loading({ forbidClick: true })
       if (!state.checkAll) {
-        state.result = state.list.map(item => item.id)
+        await post('/cart/checkALL')
+        state.result = state.list.map((item) => item.productId)
       } else {
+        await post('/cart/unCheckALL')
         state.result = []
       }
+      Toast.clear()
     }
 
     return {
@@ -203,6 +243,7 @@ export default {
       total,
       goBack,
       goTo,
+      checkOne,
       onChange,
       onSubmit,
       deleteGood,
@@ -212,46 +253,64 @@ export default {
   }
 }
 </script>
-
+<style lang="scss">
+.cart__body {
+  .van-checkbox {
+    padding-right: .05rem;
+  }
+}
+</style>
 <style lang="scss" scpoed>
 .cart__body {
-  margin: 16px 0 100px 0;
-  padding-left: 10px;
-  .good-item {
+  overflow: auto;
+  margin-left: 0.1rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  top: .6rem;
+  .good__item {
     display: flex;
-    .good-img {
+    .good__img {
       img {
         width: 1rem;
         height: 1rem;
       }
     }
-    .good-desc {
+    .good__desc {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
-      padding: 20px;
-      .good-title {
+      padding: .1rem .2rem;
+      .good__title {
         display: flex;
         justify-content: space-between;
+        font-size: .14rem;
+        span:first-child {
+          padding-right: .05rem;
+        }
+        span:last-child {
+          padding-left: .05rem;
+        }
       }
-      .good-btn {
+      .good__btn {
         display: flex;
         justify-content: space-between;
         .price {
-          font-size: 16px;
+          font-size: .16rem;
           color: red;
-          line-height: 28px;
+          line-height: .28rem;
         }
         .van-icon-delete {
-          font-size: 20px;
-          margin-top: 4px;
+          font-size: .2rem;
+          margin-top: .04rem;
         }
       }
     }
   }
   .delete-button {
-    width: 50px;
+    width: .5rem;
     height: 100%;
   }
 }
@@ -259,17 +318,17 @@ export default {
   width: 50%;
   margin: 0 auto;
   text-align: center;
-  margin-top: 200px;
+  margin-top: 2rem;
   .empty-cart {
-    width: 150px;
-    margin-bottom: 20px;
+    width: 1.5rem;
+    margin-bottom: .2rem;
   }
   .van-icon-smile-o {
-    font-size: 50px;
+    font-size: .5rem;
   }
   .title {
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: .16rem;
+    margin-bottom: .2rem;
   }
 }
 .cart {
@@ -277,58 +336,10 @@ export default {
   left: 0;
   right: 0;
   bottom: 0.51rem;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1PX solid #f1f1f1;
 }
-.check {
-  display: flex;
-  height: .5rem;
-  border-top: solid .01rem #f1f1f1;
-  line-height: .5rem;
-  &__icon {
-    width: .84rem;
-    position: relative;
-    &__img {
-      height: .26rem;
-      width: .28rem;
-      display: block;
-      margin: .12rem auto;
-    }
-    &__tag {
-      width: auto;
-      min-width: .2rem;
-      height: 0.2rem;
-      text-align: center;
-      line-height: 0.2rem;
-      position: absolute;
-      top: 0.02rem;
-      left: 0.48rem;
-      font-size: 0.16rem;
-      color: white;
-      border-radius: .1rem;
-      background-color: #E93B3B;
-      transform: scale(.5);
-      transform-origin: left center;
-    }
-  }
-  &__info {
-    flex: 1;
-    &__title {
-      font-size: .12rem;
-      color: #333;
-      text-align: center;
-    }
-    &__price {
-      font-size: .18rem;
-      color: #E93B3B;
-      text-align: center;
-    }
-  }
-  &__button {
-    width: .98rem;
-    color: white;
-    font-size: .14rem;
-    text-align: center;
-    background: linear-gradient(to right, #47b1ee, #3883e4);
-  }
+.van-submit-bar {
+  position: absolute;
+  bottom: 0.51rem;
 }
 </style>
